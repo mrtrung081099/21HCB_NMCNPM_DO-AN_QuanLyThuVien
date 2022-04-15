@@ -10,7 +10,6 @@ namespace Entities.DTO.PhieuMuon
     {
         public Guid DocGiaId { get; set; }
         public DateTime NgayMuon { get; set; }
-        public DateTime NgayHetHan { get; set; }
         public List<SachMuonForCreationDto> SachMuons { get; set; }
     }
 }

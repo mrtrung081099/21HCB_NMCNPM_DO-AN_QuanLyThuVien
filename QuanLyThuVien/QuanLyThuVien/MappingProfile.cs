@@ -18,11 +18,13 @@ namespace QuanLyThuVien
         {
             CreateMap<NhanVien, NhanVienDto>();
             CreateMap<DocGia, DocGiaDto>();
-            CreateMap<NhanVienForCreationDto, NhanVien>();
-            CreateMap<SachForCreationDto, Sach>();
-            CreateMap<NhanVienForUpdateDto, NhanVien>();
             CreateMap<DocGiaForCreationUpdateDto, DocGia>();
-            CreateMap<PhieuMuonForCreationDto, PhieuMuon>();
+            CreateMap<NhanVienForCreationDto, NhanVien>();
+            CreateMap<NhanVienForUpdateDto, NhanVien>();
+            CreateMap<SachForCreationDto, Sach>();
+            CreateMap<Sach, SachDto>();
+            CreateMap<PhieuMuonForCreationDto, PhieuMuon>(); 
+            CreateMap<PhieuMuon, PhieuMuonDto>();
             CreateMap<CTPhieuMuonForCreationDto, ChiTietPhieuMuon>();
             CreateMap<SachMuonForCreationDto, ChiTietPhieuMuon>();
             CreateMap<UserForCreate, User>();

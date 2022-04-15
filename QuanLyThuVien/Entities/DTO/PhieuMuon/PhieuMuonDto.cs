@@ -1,20 +1,19 @@
-﻿using System;
+﻿using Entities.DTO.Sach;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Models
+namespace Entities.DTO.PhieuMuon
 {
-    public class PhieuMuon
+    public class PhieuMuonDto
     {
-        [Column("PhieuMuonId")]
         public Guid Id { get; set; }
-        [ForeignKey(nameof(DocGia))]
         public Guid DocGiaId { get; set; }
         public DateTime NgayMuon { get; set; }
         public DateTime NgayHetHan { get; set; }
-        public DocGia DocGia { get; set; }
+        public string TenDocGia { get; set; }
+        public List<SachDto> SachMuons { get; set; }
     }
 }

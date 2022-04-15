@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DTO.PhieuMuon;
+using Entities.DTO.Sach;
 using Entities.Models;
 using QuanLyThuVien.Services.Interface;
 using System;
@@ -15,13 +16,15 @@ namespace QuanLyThuVien.Services
         private readonly IRepositoryManager _repository;
         private ILoggerManager _logger;
         private readonly IMapper _mapper;
-        
-        public CTPhieuMuonService(IRepositoryManager repository, IMapper mapper, ILoggerManager logger)
+        private readonly ISachService _sachService;
+
+        public CTPhieuMuonService(IRepositoryManager repository, IMapper mapper, ILoggerManager logger, ISachService sachService)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
-        }
+            _sachService = sachService;
+    }
 
         public async Task CreateCTPhieuMuonAsync(CTPhieuMuonForCreationDto ctpm)
         {
@@ -49,6 +52,21 @@ namespace QuanLyThuVien.Services
                 }
             }
             return listCtpm;
+        }
+
+        public async Task<List<SachDto>> GetAllSachMuonByPmId(Guid pmId)
+        {
+            var listCtpm = await _repository.CTPhieuMuon.GetAllCTPhieuMuonByIdPmAsync(pmId);
+            List<SachDto> sachmuons = new List<SachDto>();
+            if (listCtpm != null)
+            {
+                foreach (var ctpm in listCtpm)
+                {
+                    var s = await _sachService.GetSachDtoByIdAsync(ctpm.SachId);
+                    sachmuons.Add(s);
+                }
+            }
+            return sachmuons;
         }
     }
 }
