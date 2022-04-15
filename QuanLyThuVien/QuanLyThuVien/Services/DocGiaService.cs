@@ -25,7 +25,11 @@ namespace QuanLyThuVien.Services
         {
             var dgs = new List<DocGiaDto>();
             var listDg = await _repository.DocGia.GetAllDocGiaAsync(docgiaParameters);
-            var listDgDto = _mapper.Map(listDg, dgs);
+            foreach (var item in listDg)
+            {
+
+            }
+                var listDgDto = _mapper.Map(listDg, dgs);
             foreach(var item in listDgDto)
             {
                 var nv = await _repository.NhanVien.GetNhanVienByIdAsync(item.NhanVienId);

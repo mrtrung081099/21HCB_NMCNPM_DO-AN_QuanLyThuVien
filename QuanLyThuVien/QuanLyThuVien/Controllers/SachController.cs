@@ -37,7 +37,7 @@ namespace QuanLyThuVien.Controllers
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetSachById(Guid id)
         {
-            var sach = await _sachService.GetSachByIdAsync(id);
+            var sach = await _sachService.GetSachDtoByIdAsync(id);
             if (sach == null)
             {
                 _logger.LogInfo($"Sách với id: {id} không tồn tại .");

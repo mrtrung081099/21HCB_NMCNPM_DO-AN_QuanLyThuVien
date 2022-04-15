@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DTO.PhieuMuon;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using QuanLyThuVien.Services.Interface;
 using System;
@@ -25,10 +26,17 @@ namespace QuanLyThuVien.Controllers
             _logger = logger;
             _phieumuonService = phieumuonService;
         }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllPhieuMuon([FromQuery] PhieuMuonParameters pmParameters)
+        {
+            var pms = await _phieumuonService.GetAllPhieuMuonDtoAsync(pmParameters);
+            var total = await _phieumuonService.GetCountPhieuMuon();
+            return Ok(new { total = total, listPhieuMuons = pms });
+        }
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetPhieuMuonById(Guid id)
         {
-            var nv = await _phieumuonService.GetPhieuMuonByIdAsync(id);
+            var nv = await _phieumuonService.GetPhieuMuonDtoByIdAsync(id);
             if (nv == null)
             {
                 _logger.LogInfo($"Phiếu mượn với id: {id} không tồn tại .");

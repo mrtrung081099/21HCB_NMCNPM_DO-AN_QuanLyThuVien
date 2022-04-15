@@ -22,32 +22,36 @@ namespace QuanLyThuVien.Services
             _logger = logger;
         }
 
-        public async Task<Sach> CreateSachAsync(SachForCreationDto Sach)
+        public async Task<SachDto> CreateSachAsync(SachForCreationDto Sach)
         {
             var sach = _mapper.Map<Sach>(Sach);
             sach.NgayTiepNhan = DateTime.Now;
             _repository.Sach.CreateSach(sach);
             await _repository.SaveAsync();
-            var result = await GetSachByIdAsync(sach.Id);
+            var result = await GetSachDtoByIdAsync(sach.Id);
             return result;
 
         }
 
-        public async Task<IEnumerable<Sach>> GetAllSachAsync(SachParameters SachParameters)
+        public async Task<IEnumerable<SachDto>> GetAllSachAsync(SachParameters SachParameters)
         {
             var sachs = await _repository.Sach.GetAllSachAsync(SachParameters);
-            foreach (var s in sachs)
+            var listSachDto = _mapper.Map<IEnumerable<SachDto>>(sachs);
+            foreach (var s in listSachDto)
             {
-                s.NhanVien = await _repository.NhanVien.GetNhanVienByIdAsync(s.NhanVienId);
+                var nv = await _repository.NhanVien.GetNhanVienByIdAsync(s.NhanVienId);
+                s.TenNhanVien = nv.HoTen;
             }
-            return sachs;
+            return listSachDto;
         }
 
-        public async Task<Sach> GetSachByIdAsync(Guid id)
+        public async Task<SachDto> GetSachDtoByIdAsync(Guid id)
         {
             var sach = await _repository.Sach.GetSachByIdAsync(id);
-            sach.NhanVien = await _repository.NhanVien.GetNhanVienByIdAsync(sach.NhanVienId);
-            return sach;
+            var nv = await _repository.NhanVien.GetNhanVienByIdAsync(sach.NhanVienId);
+            var sachdto = _mapper.Map<SachDto>(sach);
+            sachdto.TenNhanVien = nv.HoTen;
+            return sachdto;
         }
 
         public void DeleteSachAsync(Sach Sach)
@@ -60,12 +64,17 @@ namespace QuanLyThuVien.Services
             return await _repository.Sach.CountSach();
         }
 
-        public async Task<Sach> UpdateSachAsync(Sach Sach)
+        public async Task<SachDto> UpdateSachAsync(Sach Sach)
         {
             _repository.Sach.UpdateSach(Sach);
             await _repository.SaveAsync();
-            var result = await GetSachByIdAsync(Sach.Id);
+            var result = await GetSachDtoByIdAsync(Sach.Id);
             return result;
+        }
+
+        public async Task<Sach> GetSachByIdAsync(Guid id)
+        {
+            return await _repository.Sach.GetSachByIdAsync(id);
         }
     }
 }

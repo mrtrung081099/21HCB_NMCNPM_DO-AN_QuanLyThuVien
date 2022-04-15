@@ -25,9 +25,10 @@ namespace QuanLyThuVien.Services
 
         }
 
-        public async Task<PhieuMuon> CreatePhieuMuonAsync(PhieuMuonForCreationDto pm)
+        public async Task<PhieuMuonDto> CreatePhieuMuonAsync(PhieuMuonForCreationDto pm)
         {
             var phieumuon = _mapper.Map<PhieuMuon>(pm);
+            phieumuon.NgayHetHan = phieumuon.NgayMuon.AddDays(4);
             _repository.PhieuMuon.CreatePhieuMuon(phieumuon);
             await _repository.SaveAsync();
             if (pm.SachMuons != null)
@@ -37,18 +38,45 @@ namespace QuanLyThuVien.Services
                     await _ctpmService.CreateCtPmAsync(ctpm, phieumuon.Id);
                 }
             }
-            var result = await GetPhieuMuonByIdAsync(phieumuon.Id);
+            var result = await GetPhieuMuonDtoByIdAsync(phieumuon.Id);
 
             return result;
         }
 
-        public async Task<PhieuMuon> GetPhieuMuonByIdAsync(Guid id)
+
+        public async Task<PhieuMuonDto> GetPhieuMuonDtoByIdAsync(Guid id)
         {
             var pm = await _repository.PhieuMuon.GetPhieuMuonByIdAsync(id);
-            pm.DocGia = await _repository.DocGia.GetDocGiaByIdAsync(pm.DocGiaId);
-            pm.CTPhieuMuons = await _ctpmService.GetAllCTPhieuMuonByPmId(pm.Id);
-            return pm;
+            var sachmuons = await _ctpmService.GetAllSachMuonByPmId(pm.Id);
+            var dg = await _repository.DocGia.GetDocGiaByIdAsync(pm.DocGiaId);
+            var pmDto = _mapper.Map<PhieuMuonDto>(pm);
+            pmDto.TenDocGia = dg.HoTen;
+            pmDto.SachMuons = sachmuons;
+            return pmDto;
         }
 
+        public async Task<IEnumerable<PhieuMuonDto>> GetAllPhieuMuonDtoAsync(PhieuMuonParameters pm)
+        {
+            var pms = new List<PhieuMuonDto>();
+            var listPm =  await _repository.PhieuMuon.GetAllPhieuMuonAsync(pm);
+            var listPmDto = _mapper.Map(listPm, pms);
+            foreach (var pmDto in listPmDto)
+            {
+                var sachmuons = await _ctpmService.GetAllSachMuonByPmId(pmDto.Id);
+                var dg = await _repository.DocGia.GetDocGiaByIdAsync(pmDto.DocGiaId);
+                pmDto.TenDocGia = dg.HoTen;
+                pmDto.SachMuons = sachmuons;
+            }
+            return listPmDto;
+        }
+        public async Task<int> GetCountPhieuMuon()
+        {
+            return await _repository.PhieuMuon.CountPhieuMuon();
+        }
+
+        public Task<PhieuMuon> GetPhieuMuonByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
