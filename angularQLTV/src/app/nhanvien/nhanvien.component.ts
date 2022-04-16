@@ -70,7 +70,7 @@ export class NhanvienComponent implements OnInit {
   }
 
   getAllNhanViens(){
-    this.nhanvienService.GetAllNhanVien(this.pageNum,this.pageSize,this.search).subscribe((res:any) => {
+    this.nhanvienService.GetAllNhanVienByPaging(this.pageNum,this.pageSize,this.search).subscribe((res:any) => {
       this.listNhanVien = res.listNvs;
       this.totalNv = res.total;
       this.updateEditCache();

@@ -1,0 +1,144 @@
+<div>
+  <div class="btnAdd">
+    <div class="search">
+      <div class="searchInput">
+        <nz-input-group [nzSuffix]="inputClearTpl">
+          <input type="text" nz-input [(ngModel)]="search" placeholder="Tìm kiếm sách" />
+        </nz-input-group>
+        <ng-template #inputClearTpl>
+          <i
+            nz-icon
+            class="ant-input-clear-icon"
+            nzTheme="fill"
+            nzType="close-circle"
+            *ngIf="search"
+            (click)="searchSach(false)"
+          ></i>
+        </ng-template>
+      </div>
+      <button (click)="searchSach(true)" nz-button nzType="primary" nzShape="circle"><i nz-icon nzType="search"></i></button>
+      <nz-select class="searchState" nzShowSearch nzAllowClear nzPlaceHolder="Tìm kiếm theo tình trạng" [(ngModel)]="searchState" (ngModelChange)="searchSachByState($event)">
+        <nz-option *ngFor="let b of arrStateSach" [nzValue]="b" [nzLabel]="b"></nz-option>
+      </nz-select>
+    </div>
+    <button nz-button (click)="showModalCreate()">
+      <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+      Tiếp nhận sách mới
+    </button>
+  </div>
+  <div class="title"><h1>Danh Sách Sách</h1></div>
+  <nz-table #editRowTable nzBordered [nzShowPagination]="false" [nzData]="listSach" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th class="stt">STT</th>
+        <th>Mã Sách</th>
+        <th>Tên Sách</th>
+        <th>Thể Loại</th>
+        <th>Tác Giả</th>
+        <th>Tình Trạng</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of editRowTable.data; index as i" >
+        <ng-container>
+          <td>{{i+1}}</td>
+          <td>{{ data.id}}</td>
+          <td>{{ data.ten}}</td>
+          <td>{{ data.loai}}</td>
+          <td>{{ data.tacGia }}</td>
+          <td>{{ data.tinhTrang }}</td>
+          <td>
+            <a (click)="showInfoSach(data)">Chi Tiết</a>
+            <a (click)="startEdit(data)" class="edit">Sửa</a>
+            <a class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?" (nzOnConfirm)="deleteSach(data.id)">Xóa</a>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="paging">
+    <h3>Tổng: {{totalSach}}</h3>
+    <nz-pagination (nzPageIndexChange)="getByPaging($event)" [nzPageIndex]="pageNum" [nzTotal]="totalSach" [nzPageSize]="pageSize"></nz-pagination>
+  </div>
+</div>
+<nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="Tiếp nhận sách mới"
+      (nzOnCancel)="handleCancelModalCreate()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+    >
+    <div *nzModalContent>
+      <form nz-form [formGroup]="createForm">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">Tên sách</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên sách">
+            <input nz-input formControlName="ten" name="required" required />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">Thể loại</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập thể loại">
+            <nz-select formControlName="loai"  nzAllowClear nzPlaceHolder="Chọn thể loại" name="required" required>
+              <nz-option *ngFor="let b of arrTypeSach" [nzValue]="b" [nzLabel]="b"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">Tác giả</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên tác giả">
+            <input nz-input formControlName="tacGia" name="required" required />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">Năm xuất bản</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập năm xuất bản">
+            <input nz-input formControlName="namSx" name="required" required />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">Nhà xuất bản</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập nhà xuất bản">
+            <input nz-input formControlName="nhaSx" name="required" required />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">Giá</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập giá sách">
+            <input nz-input formControlName="gia" name="required" required />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancelModalCreate()">Hủy</button>
+      <button *ngIf="isCreate" nz-button nzType="primary" (click)="handleOk()">Thêm mới</button>
+      <button *ngIf="isUpdate" nz-button nzType="primary" (click)="saveEdit()">Lưu</button>
+    </div>
+</nz-modal>
+<nz-modal
+      [(nzVisible)]="isShowInfoSach"
+      nzTitle="Thông Tin Sách"
+      (nzOnCancel)="handleCancel()"
+      [nzOkLoading]="isOkLoading"
+      [nzFooter] = null
+      nzWidth= 800px
+    >
+    <div *nzModalContent class="infoSach">
+      <div class="col">
+        <div class="row"><h4>Tên sách: </h4><p>{{infoSachSimple.ten}}</p></div>
+        <div class="row"><h4>Năm xuất bản: </h4><p>{{infoSachSimple.namSx}}</p></div>
+        <div class="row"><h4>Trị giá: </h4><p>{{infoSachSimple.gia}} đồng</p></div>
+      </div>
+      <div class="col">
+        <div class="row"><h4>Thể loại: </h4><p>{{infoSachSimple.loai}}</p></div>
+        <div class="row"><h4>Nhà xuất bản: </h4><p>{{infoSachSimple.nhaSx}}</p></div>
+        <div class="row"><h4>Người Tiếp Nhận: </h4><p>{{infoSachSimple.tenNhanVien}}</p></div>
+      </div>
+      <div class="col">
+        <div class="row"><h4>Tác giả: </h4><p>{{infoSachSimple.tacGia}}</p></div>
+        <div class="row"><h4>Ngày nhập: </h4><p>{{infoSachSimple.ngayTiepNhan | date: 'dd/MM/yyyy'}}</p></div>
+      </div>
+    </div>
+</nz-modal>

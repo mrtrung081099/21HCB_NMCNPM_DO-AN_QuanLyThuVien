@@ -31,7 +31,21 @@ namespace QuanLyThuVien.Controllers
         public async Task<IActionResult> GetAllSach([FromQuery] SachParameters sachParameters)
         {
             var sach = await _sachService.GetAllSachAsync(sachParameters);
-            var total = await _sachService.GetCountSach();
+            var total = await _repository.Sach.Count();
+            return Ok(new { total = total, listSachs = sach });
+        }
+        [HttpGet("GetAllByState")]
+        public async Task<IActionResult> GetAllByState([FromQuery] SachParameters sachParameters)
+        {
+            var sach = await _sachService.GetAllSachByStateAsync(sachParameters);
+            var total = await _repository.Sach.CountTotalByState(sachParameters.Search);
+            return Ok(new { total = total, listSachs = sach });
+        }
+        [HttpGet("GetAllByName")]
+        public async Task<IActionResult> GetAllByNameState([FromQuery] SachParameters sachParameters)
+        {
+            var sach = await _sachService.GetAllSachByNameAsync(sachParameters);
+            var total = await _repository.Sach.CountTotalByName(sachParameters.Search);
             return Ok(new { total = total, listSachs = sach });
         }
         [HttpGet("GetById/{id}")]

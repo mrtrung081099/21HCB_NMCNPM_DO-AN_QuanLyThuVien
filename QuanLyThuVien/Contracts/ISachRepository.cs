@@ -10,7 +10,13 @@ namespace Contracts
     public interface ISachRepository
     {
         Task<IEnumerable<Sach>> GetAllSachAsync(SachParameters sachParameters);
+        Task<IEnumerable<Sach>> GetAllSachByStateAsync(SachParameters sachParameters);
+        Task<IEnumerable<Sach>> GetAllSachByNameAsync(SachParameters sachParameters);
         Task<Sach> GetSachByIdAsync(Guid id);
+        Task<int> Count();
+        Task<int> CountTotalByState(string trinhTrang);
+        Task<int> CountTotalByName(string tenSach);
+
         Task<int> CountSach();
         void CreateSach(Sach sach);
         void UpdateSach(Sach sach);
