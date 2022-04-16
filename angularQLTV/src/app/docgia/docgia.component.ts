@@ -59,7 +59,7 @@ export class DocgiaComponent implements OnInit {
   }
 
   getAllNhanViens() {
-    this._nhanvienService.GetAllNhanVien(this.pageNum, this.pageSize, this.search).subscribe((res: any) => {
+    this._nhanvienService.GetAllNhanVien().subscribe((res: any) => {
       console.log(res);
       this.filteredNhanVien = res.listNvs;
     }, (err) => console.log(err));

@@ -34,14 +34,16 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { SachComponent } from './sach/sach.component';
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     NhanvienComponent,
     DocgiaComponent,
-    LoginComponent
+    LoginComponent,
+      SachComponent
    ],
   imports: [
     BrowserModule,
@@ -70,9 +72,10 @@ registerLocaleData(en);
     NzSpinModule,
     NzInputNumberModule,
     RouterModule.forRoot([
-      { path: 'login', component: LoginComponent },
-      { path: 'nhanviens', component: NhanvienComponent, pathMatch: 'full' },
-      { path: 'docgias', component: DocgiaComponent, pathMatch: 'full' }
+      { path: 'login', component: LoginComponent,pathMatch: 'full' },
+      { path: 'nhanviens', component: NhanvienComponent, pathMatch: 'full'},
+      { path: 'docgias', component: DocgiaComponent, pathMatch: 'full' },
+      { path: 'sachs', component: SachComponent, pathMatch: 'full' }
     ], {
       onSameUrlNavigation: 'reload'
     })

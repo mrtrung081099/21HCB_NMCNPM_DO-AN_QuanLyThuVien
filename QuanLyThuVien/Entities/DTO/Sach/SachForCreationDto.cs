@@ -15,7 +15,6 @@ namespace Entities.DTO.Sach
         public string NhaSx { get; set; }
         public string TinhTrang { get; set; }
         public float Gia { get; set; }
-        public DateTime NgayTiepNhan { get; set; }
         public Guid NhanVienId { get; set; }
     }
 }

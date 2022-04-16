@@ -8,8 +8,13 @@ import { environment } from 'src/environments/environment';
 export class NhanvienService {
 
   constructor(private http: HttpClient) { }
-  GetAllNhanVien(pageNum:any,pageSize:any,search:any) {
+  GetAllNhanVienByPaging(pageNum:any,pageSize:any,search:any) {
     return this.http.get(environment.apiUrl + 'nhanviens/GetAll?PageNumber='+pageNum+'&PageSize='+pageSize+'&Search='+search, {
+      headers: new HttpHeaders({ "Content-Type": "application/json" }),
+    });
+  }
+  GetAllNhanVien() {
+    return this.http.get(environment.apiUrl + 'nhanviens/GetAll', {
       headers: new HttpHeaders({ "Content-Type": "application/json" }),
     });
   }

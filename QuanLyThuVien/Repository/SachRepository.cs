@@ -35,20 +35,11 @@ namespace Repository
         public async Task<IEnumerable<Sach>> GetAllSachAsync(SachParameters sachParameters)
         {
             List<Sach> sachs;
-            if (sachParameters.Search == null || sachParameters.Search == "null")
-            {
-                sachs = await FindAll().OrderBy(e => e.Ten)
-                .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
-                .Take(sachParameters.PageSize)
-                .ToListAsync();
-            }
-            else
-            {
-                sachs = await FindByCondition(x => x.Ten.Contains(sachParameters.Search)).OrderBy(e => e.Ten)
-                .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
-                .Take(sachParameters.PageSize)
-                .ToListAsync();
-            }
+            sachs = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý"))
+                                        .OrderBy(e => e.TinhTrang)
+                                        .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
+                                        .Take(sachParameters.PageSize)
+                                        .ToListAsync();
             return sachs;
         }
 
@@ -61,6 +52,43 @@ namespace Repository
         public void UpdateSach(Sach sach)
         {
             Update(sach);
+        }
+
+        public async Task<int> CountTotalByState(string trinhTrang)
+        {
+            var total = await FindByCondition(x => x.TinhTrang.Contains(trinhTrang)).ToListAsync();
+            return total.Count();
+        }
+        public async Task<int> Count()
+        {
+            var total = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý") && !x.TinhTrang.Contains("Đã Mất")).ToListAsync();
+            return total.Count();
+        }
+
+        public async Task<IEnumerable<Sach>> GetAllSachByStateAsync(SachParameters sachParameters)
+        {
+            List<Sach> sachs;
+            sachs = await FindByCondition(x => x.TinhTrang.Contains(sachParameters.Search))
+                                        .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
+                                        .Take(sachParameters.PageSize)
+                                        .ToListAsync();
+            return sachs;
+        }
+
+        public async Task<IEnumerable<Sach>> GetAllSachByNameAsync(SachParameters sachParameters)
+        {
+            List<Sach> sachs;
+            sachs = await FindByCondition(x => x.Ten.Contains(sachParameters.Search))
+                                        .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
+                                        .Take(sachParameters.PageSize)
+                                        .ToListAsync();
+            return sachs;
+        }
+
+        public async Task<int> CountTotalByName(string tenSach)
+        {
+            var total = await FindByCondition(x => x.Ten.Contains(tenSach)).ToListAsync();
+            return total.Count();
         }
     }
 }

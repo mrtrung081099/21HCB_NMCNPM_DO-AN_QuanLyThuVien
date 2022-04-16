@@ -76,5 +76,29 @@ namespace QuanLyThuVien.Services
         {
             return await _repository.Sach.GetSachByIdAsync(id);
         }
+
+        public async Task<IEnumerable<SachDto>> GetAllSachByStateAsync(SachParameters SachParameters)
+        {
+            var sachs = await _repository.Sach.GetAllSachByStateAsync(SachParameters);
+            var listSachDto = _mapper.Map<IEnumerable<SachDto>>(sachs);
+            foreach (var s in listSachDto)
+            {
+                var nv = await _repository.NhanVien.GetNhanVienByIdAsync(s.NhanVienId);
+                s.TenNhanVien = nv.HoTen;
+            }
+            return listSachDto;
+        }
+
+        public async Task<IEnumerable<SachDto>> GetAllSachByNameAsync(SachParameters SachParameters)
+        {
+            var sachs = await _repository.Sach.GetAllSachByNameAsync(SachParameters);
+            var listSachDto = _mapper.Map<IEnumerable<SachDto>>(sachs);
+            foreach (var s in listSachDto)
+            {
+                var nv = await _repository.NhanVien.GetNhanVienByIdAsync(s.NhanVienId);
+                s.TenNhanVien = nv.HoTen;
+            }
+            return listSachDto;
+        }
     }
 }
