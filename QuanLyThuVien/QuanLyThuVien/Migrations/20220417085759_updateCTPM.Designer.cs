@@ -4,14 +4,16 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace QuanLyThuVien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20220417085759_updateCTPM")]
+    partial class updateCTPM
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,42 +39,9 @@ namespace QuanLyThuVien.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PhieuMuonId");
-
                     b.HasIndex("SachId");
 
                     b.ToTable("ChiTietPhieuMuons");
-                });
-
-            modelBuilder.Entity("Entities.Models.ChiTietPhieuTra", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ChiTietPhieuTraId");
-
-                    b.Property<DateTime>("NgayMuon")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("PhieuTraId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SachId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SoNgayMuon")
-                        .HasColumnType("int");
-
-                    b.Property<float>("TienPhat")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PhieuTraId");
-
-                    b.HasIndex("SachId");
-
-                    b.ToTable("ChiTietPhieuTras");
                 });
 
             modelBuilder.Entity("Entities.Models.DocGia", b =>
@@ -173,29 +142,6 @@ namespace QuanLyThuVien.Migrations
                     b.ToTable("PhieuMuons");
                 });
 
-            modelBuilder.Entity("Entities.Models.PhieuTra", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PhieuTraId");
-
-                    b.Property<Guid>("DocGiaId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("NgayTra")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("TienPhat")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocGiaId");
-
-                    b.ToTable("PhieuTras");
-                });
-
             modelBuilder.Entity("Entities.Models.Sach", b =>
                 {
                     b.Property<Guid>("Id")
@@ -277,38 +223,11 @@ namespace QuanLyThuVien.Migrations
 
             modelBuilder.Entity("Entities.Models.ChiTietPhieuMuon", b =>
                 {
-                    b.HasOne("Entities.Models.PhieuMuon", "PhieuMuon")
-                        .WithMany()
-                        .HasForeignKey("PhieuMuonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Entities.Models.Sach", "Sach")
                         .WithMany()
                         .HasForeignKey("SachId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PhieuMuon");
-
-                    b.Navigation("Sach");
-                });
-
-            modelBuilder.Entity("Entities.Models.ChiTietPhieuTra", b =>
-                {
-                    b.HasOne("Entities.Models.PhieuTra", "PhieuTra")
-                        .WithMany()
-                        .HasForeignKey("PhieuTraId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Sach", "Sach")
-                        .WithMany()
-                        .HasForeignKey("SachId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PhieuTra");
 
                     b.Navigation("Sach");
                 });
@@ -325,17 +244,6 @@ namespace QuanLyThuVien.Migrations
                 });
 
             modelBuilder.Entity("Entities.Models.PhieuMuon", b =>
-                {
-                    b.HasOne("Entities.Models.DocGia", "DocGia")
-                        .WithMany()
-                        .HasForeignKey("DocGiaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DocGia");
-                });
-
-            modelBuilder.Entity("Entities.Models.PhieuTra", b =>
                 {
                     b.HasOne("Entities.Models.DocGia", "DocGia")
                         .WithMany()

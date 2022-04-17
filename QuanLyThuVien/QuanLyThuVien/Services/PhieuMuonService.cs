@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DTO.PhieuMuon;
+using Entities.DTO.Sach;
 using Entities.Models;
 using QuanLyThuVien.Services.Interface;
 using System;
@@ -16,18 +17,20 @@ namespace QuanLyThuVien.Services
         private ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly ICTPhieuMuonService _ctpmService;
-        public PhieuMuonService(IRepositoryManager repository, IMapper mapper, ILoggerManager logger, ICTPhieuMuonService ctpmService)
+        private readonly ISachService _sachService;
+        public PhieuMuonService(IRepositoryManager repository, IMapper mapper, ILoggerManager logger, ICTPhieuMuonService ctpmService, ISachService sachService)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
             _ctpmService = ctpmService;
-
+            _sachService = sachService;
         }
 
         public async Task<PhieuMuonDto> CreatePhieuMuonAsync(PhieuMuonForCreationDto pm)
         {
             var phieumuon = _mapper.Map<PhieuMuon>(pm);
+            phieumuon.NgayMuon = DateTime.Now;
             phieumuon.NgayHetHan = phieumuon.NgayMuon.AddDays(4);
             _repository.PhieuMuon.CreatePhieuMuon(phieumuon);
             await _repository.SaveAsync();
@@ -36,6 +39,7 @@ namespace QuanLyThuVien.Services
                 foreach(var ctpm in pm.SachMuons)
                 {
                     await _ctpmService.CreateCtPmAsync(ctpm, phieumuon.Id);
+                    await _sachService.UpdateStateSachAsync(ctpm.SachId, "Đã Mượn");
                 }
             }
             var result = await GetPhieuMuonDtoByIdAsync(phieumuon.Id);
@@ -78,5 +82,7 @@ namespace QuanLyThuVien.Services
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

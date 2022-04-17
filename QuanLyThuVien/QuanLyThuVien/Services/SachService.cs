@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.DTO.PhieuMuon;
 using Entities.DTO.Sach;
 using Entities.Models;
 using QuanLyThuVien.Services.Interface;
@@ -99,6 +100,42 @@ namespace QuanLyThuVien.Services
                 s.TenNhanVien = nv.HoTen;
             }
             return listSachDto;
+        }
+
+        public async Task UpdateStateSachAsync(Guid id, string state)
+        {
+                var sach = await _repository.Sach.GetSachByIdAsync(id);
+                if (sach != null)
+                {
+                    sach.TinhTrang = state;
+                    _repository.Sach.UpdateSach(sach);
+                    await _repository.SaveAsync();
+                }
+        }
+        public async Task<List<SachMuonDto>> GetListSachMuonByDocGiaId(Guid docgiaId)
+        {
+            var sach = await _repository.Sach.GetAllSachMuonByDocGiaIdAsync(docgiaId);
+            foreach(var item in sach)
+            {
+                var ngayTra = DateTime.Now;
+                TimeSpan Time = ngayTra - item.NgayMuon;
+                item.SoNgayMuon = Time.Days;
+                var ngayTre = item.SoNgayMuon - 4;
+                if (ngayTre > 0)
+                {
+                    item.TienPhat = 1000 * ngayTre;
+                }
+                else
+                {
+                    item.TienPhat = 0;
+                }
+            }
+            return sach;
+        }
+
+        public async Task<List<SachMuonDto>> GetListSachTraByPtId(Guid ptId)
+        {
+            return await _repository.Sach.GetAllSachMuonByPhieuTraIdAsync(ptId);
         }
     }
 }

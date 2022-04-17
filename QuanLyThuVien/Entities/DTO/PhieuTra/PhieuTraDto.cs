@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.DTO.PhieuMuon
+namespace Entities.DTO.PhieuTra
 {
-    public class PhieuMuonDto
+    public class PhieuTraDto
     {
         public Guid Id { get; set; }
         public Guid DocGiaId { get; set; }
         public DateTime NgayTra { get; set; }
-        public float TienPhat { get; set; }
+        public DateTime NgayHetHan { get; set; }
         public string TenDocGia { get; set; }
-        public List<SachDto> SachMuons { get; set; }
+        public List<SachMuonDto> SachTras { get; set; }
     }
 }

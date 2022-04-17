@@ -46,7 +46,7 @@ namespace QuanLyThuVien.Controllers
 
         }
         [HttpPost("CreatePhieuMuon")]
-        public async Task<IActionResult> CreateSach(PhieuMuonForCreationDto pm)
+        public async Task<IActionResult> CreatePhieuMuon(PhieuMuonForCreationDto pm)
         {
             return Ok(await _phieumuonService.CreatePhieuMuonAsync(pm));
         }

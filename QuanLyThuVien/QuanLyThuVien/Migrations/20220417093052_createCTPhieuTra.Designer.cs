@@ -4,14 +4,16 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace QuanLyThuVien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20220417093052_createCTPhieuTra")]
+    partial class createCTPhieuTra
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,20 +53,11 @@ namespace QuanLyThuVien.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ChiTietPhieuTraId");
 
-                    b.Property<DateTime>("NgayMuon")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("PhieuTraId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SachId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SoNgayMuon")
-                        .HasColumnType("int");
-
-                    b.Property<float>("TienPhat")
-                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

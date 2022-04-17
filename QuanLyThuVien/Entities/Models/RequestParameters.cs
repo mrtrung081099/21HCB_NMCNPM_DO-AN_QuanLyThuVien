@@ -45,5 +45,13 @@ namespace Entities.Models
     {
 
     }
+    public class PhieuTraParameters : RequestParameters
+    {
+
+    }
+    public class CTPhieuTraParameters : RequestParameters
+    {
+
+    }
 
 }

@@ -21,6 +21,11 @@ namespace Entities
         public DbSet<Sach> Sachs { get; set; }
         public DbSet<PhieuMuon> PhieuMuons { get; set; }
         public DbSet<ChiTietPhieuMuon> ChiTietPhieuMuons { get; set; }
+        public DbSet<PhieuTra> PhieuTras { get; set; }
+
+        public DbSet<ChiTietPhieuTra> ChiTietPhieuTras { get; set; }
+
+        
 
     }
 }
