@@ -14,6 +14,8 @@ namespace Contracts
         ISachRepository Sach { get; }
         IPhieuMuonRepository PhieuMuon { get; }
         ICTPhieuMuonRepository CTPhieuMuon { get; }
+        IPhieuTraRepository PhieuTra { get; }
+        ICTPhieuTraRepository CTPhieuTra { get; }
 
         Task SaveAsync();
 

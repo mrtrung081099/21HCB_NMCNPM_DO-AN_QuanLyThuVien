@@ -55,6 +55,11 @@ namespace Repository
             return await FindByCondition(x => x.Id.Equals(id)).SingleOrDefaultAsync();
         }
 
+        public async Task<ChiTietPhieuMuon> GetCTPhieuMuonBySachIdAsync(Guid sachId)
+        {
+            return await FindByCondition(x => x.SachId == sachId && x.TinhTrang == "Chưa Trả").SingleOrDefaultAsync();
+        }
+
         public void UpdateCTPhieuMuon(ChiTietPhieuMuon ctpm)
         {
             Update(ctpm);

@@ -11,9 +11,10 @@ namespace QuanLyThuVien.Services.Interface
     public interface ICTPhieuMuonService
     {
         public Task CreateCTPhieuMuonAsync(CTPhieuMuonForCreationDto ctpm);
+        public Task UpdateCTPhieuMuonAsync(Guid sachId, string tinhTrang);
+
         public Task CreateCtPmAsync(SachMuonForCreationDto ctpm,Guid pmId);
         public Task<IEnumerable<ChiTietPhieuMuon>> GetAllCTPhieuMuonByPmId(Guid pmId);
-
         public Task<List<SachDto>> GetAllSachMuonByPmId(Guid pmId);
     }
 }

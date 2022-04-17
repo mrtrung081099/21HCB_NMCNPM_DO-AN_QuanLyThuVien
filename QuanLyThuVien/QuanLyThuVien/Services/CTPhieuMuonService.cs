@@ -24,7 +24,7 @@ namespace QuanLyThuVien.Services
             _mapper = mapper;
             _logger = logger;
             _sachService = sachService;
-    }
+        }
 
         public async Task CreateCTPhieuMuonAsync(CTPhieuMuonForCreationDto ctpm)
         {
@@ -37,6 +37,7 @@ namespace QuanLyThuVien.Services
         {
             var chitietpm = _mapper.Map<ChiTietPhieuMuon>(ctpm);
             chitietpm.PhieuMuonId = pmId;
+            chitietpm.TinhTrang = "Chưa Trả";
             _repository.CTPhieuMuon.CreateCTPhieuMuon(chitietpm);
             await _repository.SaveAsync();
         }
@@ -68,5 +69,16 @@ namespace QuanLyThuVien.Services
             }
             return sachmuons;
         }
+
+        public async Task UpdateCTPhieuMuonAsync(Guid sachId, string tinhTrang)
+        {
+            var ctpm = await _repository.CTPhieuMuon.GetCTPhieuMuonBySachIdAsync(sachId);
+            if (ctpm != null) {
+                ctpm.TinhTrang = tinhTrang;
+                _repository.CTPhieuMuon.UpdateCTPhieuMuon(ctpm);
+                await _repository.SaveAsync();
+            }
+        } 
+        
     }
 }

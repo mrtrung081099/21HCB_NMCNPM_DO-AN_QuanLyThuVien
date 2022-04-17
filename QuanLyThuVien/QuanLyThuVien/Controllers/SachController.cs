@@ -60,6 +60,11 @@ namespace QuanLyThuVien.Controllers
             return Ok(sach);
 
         }
+        [HttpGet("GetSachMuonByDocgiaId/{id}")]
+        public async Task<IActionResult> GetSachMuonByDocgiaId(Guid id)
+        {
+            return Ok(await _sachService.GetListSachMuonByDocGiaId(id));
+        }
         [HttpPost("CreateSach")]
         public async Task<IActionResult> CreateSach(SachForCreationDto sach)
         {

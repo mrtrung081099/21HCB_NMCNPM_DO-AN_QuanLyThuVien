@@ -90,6 +90,10 @@ namespace QuanLyThuVien
             services.AddScoped<IPhieuMuonService, PhieuMuonService>();
             services.AddScoped<ICTPhieuMuonRepository, CTPhieuMuonRepository>();
             services.AddScoped<ICTPhieuMuonService, CTPhieuMuonService>();
+            services.AddScoped<IPhieuTraRepository, PhieuTraRepository>();
+            services.AddScoped<IPhieuTraService, PhieuTraService>();
+            services.AddScoped<ICTPhieuTraRepository, CTPhieuTraRepository>();
+            services.AddScoped<ICTPhieuTraService, CTPhieuTraService>();
             services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {

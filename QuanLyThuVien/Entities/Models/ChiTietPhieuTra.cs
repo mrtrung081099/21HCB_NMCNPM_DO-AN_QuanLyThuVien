@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class ChiTietPhieuMuon
+    public class ChiTietPhieuTra
     {
-        [Column("ChiTietPhieuMuonId")]
+        [Column("ChiTietPhieuTraId")]
         public Guid Id { get; set; }
-        public string TinhTrang { get; set; }
-        [ForeignKey(nameof(PhieuMuon))]
-        public Guid PhieuMuonId { get; set; }
+        [ForeignKey(nameof(PhieuTra))]
+        public Guid PhieuTraId { get; set; }
         [ForeignKey(nameof(Sach))]
         public Guid SachId { get; set; }
-        public PhieuMuon PhieuMuon { get; set; }
+        public DateTime NgayMuon { get; set; }
+        public int SoNgayMuon { get; set; }
+        public float TienPhat { get; set; }
+        public PhieuTra PhieuTra { get; set; }
         public Sach Sach { get; set; }
     }
 }

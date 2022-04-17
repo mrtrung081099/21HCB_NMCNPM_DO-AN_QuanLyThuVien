@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities;
+using Entities.DTO.Sach;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,9 +13,11 @@ namespace Repository
 {
     public class SachRepository : RepositoryBase<Sach>, ISachRepository
     {
+        protected RepositoryContext _repositoryContext;
         public SachRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
         {
+            _repositoryContext = repositoryContext;
         }
 
         public async Task<int> CountSach()
@@ -35,7 +38,7 @@ namespace Repository
         public async Task<IEnumerable<Sach>> GetAllSachAsync(SachParameters sachParameters)
         {
             List<Sach> sachs;
-            sachs = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý"))
+            sachs = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý") && !x.TinhTrang.Contains("Đã Mất"))
                                         .OrderBy(e => e.TinhTrang)
                                         .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
                                         .Take(sachParameters.PageSize)
@@ -89,6 +92,41 @@ namespace Repository
         {
             var total = await FindByCondition(x => x.Ten.Contains(tenSach)).ToListAsync();
             return total.Count();
+        }
+
+        public Task<List<SachMuonDto>> GetAllSachMuonByDocGiaIdAsync(Guid docgiaId)
+        {
+            var query = from s in _repositoryContext.Sachs
+                        join ctpm in _repositoryContext.ChiTietPhieuMuons on s.Id equals ctpm.SachId
+                        join pt in _repositoryContext.PhieuMuons on ctpm.PhieuMuonId equals pt.Id
+                        where pt.DocGiaId == docgiaId && ctpm.TinhTrang == "Chưa Trả"
+                        orderby pt.NgayMuon 
+                        select new SachMuonDto
+                        {
+                            Id = s.Id,
+                            Ten = s.Ten,
+                            NgayMuon = pt.NgayMuon,
+                            NgayHetHan = pt.NgayHetHan,
+                        };
+            var sachs = query.ToListAsync();
+            return sachs;
+        }
+
+        public Task<List<SachMuonDto>> GetAllSachMuonByPhieuTraIdAsync(Guid ptId)
+        {
+            var query = from s in _repositoryContext.Sachs
+                        join ctpt in _repositoryContext.ChiTietPhieuTras on s.Id equals ctpt.SachId
+                        where ctpt.PhieuTraId == ptId
+                        select new SachMuonDto
+                        {
+                            Id = s.Id,
+                            Ten = s.Ten,
+                            NgayMuon = ctpt.NgayMuon,
+                            SoNgayMuon = ctpt.SoNgayMuon,
+                            TienPhat = ctpt.TienPhat
+                        };
+            var sachs = query.ToListAsync();
+            return sachs;
         }
     }
 }
