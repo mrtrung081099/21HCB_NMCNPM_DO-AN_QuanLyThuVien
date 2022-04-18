@@ -17,8 +17,9 @@ namespace Contracts
         IPhieuTraRepository PhieuTra { get; }
         ICTPhieuTraRepository CTPhieuTra { get; }
         IPhieuPhatRepository PhieuPhat { get; }
-
-
+        IPhieuMatSachRepository PhieuMatSach { get; }
+        IThanhLySachRepository ThanhLySach { get; }
+        ICTThanhLySachRepository CTThanhLySach { get; }
         Task SaveAsync();
 
     }

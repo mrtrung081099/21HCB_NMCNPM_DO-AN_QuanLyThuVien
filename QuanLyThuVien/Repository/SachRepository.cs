@@ -1,6 +1,7 @@
 ﻿using Contracts;
 using Entities;
 using Entities.DTO.Sach;
+using Entities.DTO.ThanhLySach;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -124,6 +125,21 @@ namespace Repository
                             NgayMuon = ctpt.NgayMuon,
                             SoNgayMuon = ctpt.SoNgayMuon,
                             TienPhat = ctpt.TienPhat
+                        };
+            var sachs = query.ToListAsync();
+            return sachs;
+        }
+
+        public Task<List<SachThanhLyDto>> GetAllSachThanhLyByTlsIdAsync(Guid tlsId)
+        {
+            var query = from s in _repositoryContext.Sachs
+                        join cttls in _repositoryContext.ChiTietThanhLySachs on s.Id equals cttls.SachId
+                        where cttls.ThanhLySachId == tlsId
+                        select new SachThanhLyDto
+                        {
+                            SachId = s.Id,
+                            TenSach = s.Ten,
+                            LyDoThanhLy = cttls.LyDoThanhLy
                         };
             var sachs = query.ToListAsync();
             return sachs;
