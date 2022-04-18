@@ -95,6 +95,8 @@ namespace QuanLyThuVien
             services.AddScoped<ICTPhieuTraRepository, CTPhieuTraRepository>();
             services.AddScoped<ICTPhieuTraService, CTPhieuTraService>();
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IPhieuPhatRepository, PhieuPhatRepository>();
+            services.AddScoped<IPhieuPhatService, PhieuPhatService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "QuanLyThuVien", Version = "v1" });

@@ -4,14 +4,16 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace QuanLyThuVien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20220418042752_createNewTable")]
+    partial class createNewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,14 +90,9 @@ namespace QuanLyThuVien.Migrations
                     b.Property<Guid>("SachId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ThanhLySachId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SachId");
-
-                    b.HasIndex("ThanhLySachId");
 
                     b.ToTable("ChiTietThanhLySachs");
                 });
@@ -240,9 +237,6 @@ namespace QuanLyThuVien.Migrations
 
                     b.Property<Guid>("DocGiaId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("NgayThu")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("NhanVienId")
                         .HasColumnType("uniqueidentifier");
@@ -427,15 +421,7 @@ namespace QuanLyThuVien.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.ThanhLySach", "ThanhLySach")
-                        .WithMany()
-                        .HasForeignKey("ThanhLySachId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Sach");
-
-                    b.Navigation("ThanhLySach");
                 });
 
             modelBuilder.Entity("Entities.Models.DocGia", b =>

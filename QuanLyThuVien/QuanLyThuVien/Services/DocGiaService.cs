@@ -83,5 +83,16 @@ namespace QuanLyThuVien.Services
                 await _repository.SaveAsync();
             }
         }
+
+        public async Task UpdateTongNoNopTienPhatDocGia(Guid dgId, float tienPhat)
+        {
+            var dg = await _repository.DocGia.GetDocGiaByIdAsync(dgId);
+            if (dg != null && dg.TongNo >= tienPhat)
+            {
+                dg.TongNo = dg.TongNo - tienPhat;
+                _repository.DocGia.UpdateDocGia(dg);
+                await _repository.SaveAsync();
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace Repository
         private IAuthRepository _authRepository;
         private ISachRepository _sachRepository;
         private IPhieuMuonRepository _phieumuonRepository;
+        private IPhieuPhatRepository _phieuphatRepository;
         private ICTPhieuMuonRepository _ctphieumuonRepository;
         private IPhieuTraRepository _phieutraRepository;
         private ICTPhieuTraRepository _ctphieutraRepository;
@@ -96,6 +97,15 @@ namespace Repository
                 if (_ctphieutraRepository == null)
                     _ctphieutraRepository = new CTPhieuTraRepository(_repositoryContext);
                 return _ctphieutraRepository;
+            }
+        }
+        public IPhieuPhatRepository PhieuPhat
+        {
+            get
+            {
+                if (_phieuphatRepository == null)
+                    _phieuphatRepository = new PhieuPhatRepository(_repositoryContext);
+                return _phieuphatRepository;
             }
         }
         public Task SaveAsync() => _repositoryContext.SaveChangesAsync();

@@ -12,8 +12,8 @@ namespace Entities.DTO.PhieuTra
         public Guid Id { get; set; }
         public Guid DocGiaId { get; set; }
         public DateTime NgayTra { get; set; }
-        public DateTime NgayHetHan { get; set; }
         public string TenDocGia { get; set; }
+        public float TienPhat { get; set; }
         public List<SachMuonDto> SachTras { get; set; }
     }
 }
