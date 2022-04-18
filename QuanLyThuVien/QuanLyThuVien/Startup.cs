@@ -94,9 +94,15 @@ namespace QuanLyThuVien
             services.AddScoped<IPhieuTraService, PhieuTraService>();
             services.AddScoped<ICTPhieuTraRepository, CTPhieuTraRepository>();
             services.AddScoped<ICTPhieuTraService, CTPhieuTraService>();
-            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IPhieuPhatRepository, PhieuPhatRepository>();
             services.AddScoped<IPhieuPhatService, PhieuPhatService>();
+            services.AddScoped<IPhieuMatSachRepository, PhieuMatSachRepository>();
+            services.AddScoped<IPhieuMatSachService, PhieuMatSachService>();
+            services.AddScoped<ICTThanhLySachRepository, CTThanhLySachRepository>();
+            services.AddScoped<IThanhLySachRepository, ThanhLySachRepository>();
+            services.AddScoped<ICTThanhLySachService, CTThanhLySachService>();
+            services.AddScoped<IThanhLySachService, ThanhLySachService>();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "QuanLyThuVien", Version = "v1" });

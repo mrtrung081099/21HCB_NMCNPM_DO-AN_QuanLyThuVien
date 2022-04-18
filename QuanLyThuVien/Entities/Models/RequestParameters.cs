@@ -57,5 +57,17 @@ namespace Entities.Models
     {
 
     }
+    public class PhieuMatSachParameters : RequestParameters
+    {
+
+    }
+    public class CTThanhLySachParameters : RequestParameters
+    {
+
+    }
+    public class ThanhLySachParameters : RequestParameters
+    {
+
+    }
 
 }

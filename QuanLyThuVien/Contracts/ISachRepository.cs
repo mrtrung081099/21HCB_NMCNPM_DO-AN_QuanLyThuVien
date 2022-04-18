@@ -1,4 +1,5 @@
 ﻿using Entities.DTO.Sach;
+using Entities.DTO.ThanhLySach;
 using Entities.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Contracts
         Task<IEnumerable<Sach>> GetAllSachByNameAsync(SachParameters sachParameters);
         Task<List<SachMuonDto>> GetAllSachMuonByDocGiaIdAsync(Guid docgiaId);
         Task<List<SachMuonDto>> GetAllSachMuonByPhieuTraIdAsync(Guid ptId);
+        Task<List<SachThanhLyDto>> GetAllSachThanhLyByTlsIdAsync(Guid tlsId);
 
         Task<Sach> GetSachByIdAsync(Guid id);
         Task<int> Count();

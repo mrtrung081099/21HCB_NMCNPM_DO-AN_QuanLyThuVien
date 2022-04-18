@@ -20,7 +20,9 @@ namespace Repository
         private ICTPhieuMuonRepository _ctphieumuonRepository;
         private IPhieuTraRepository _phieutraRepository;
         private ICTPhieuTraRepository _ctphieutraRepository;
-
+        private IPhieuMatSachRepository _phieuMatSachRepository;
+        private ICTThanhLySachRepository _ctThanhLySachRepository;
+        private IThanhLySachRepository _thanhLySachRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -106,6 +108,33 @@ namespace Repository
                 if (_phieuphatRepository == null)
                     _phieuphatRepository = new PhieuPhatRepository(_repositoryContext);
                 return _phieuphatRepository;
+            }
+        }
+        public IPhieuMatSachRepository PhieuMatSach
+        {
+            get
+            {
+                if (_phieuMatSachRepository == null)
+                    _phieuMatSachRepository = new PhieuMatSachRepository(_repositoryContext);
+                return _phieuMatSachRepository;
+            }
+        }
+        public ICTThanhLySachRepository CTThanhLySach
+        {
+            get
+            {
+                if (_ctThanhLySachRepository == null)
+                    _ctThanhLySachRepository = new CTThanhLySachRepository(_repositoryContext);
+                return _ctThanhLySachRepository;
+            }
+        }
+        public IThanhLySachRepository ThanhLySach
+        {
+            get
+            {
+                if (_thanhLySachRepository == null)
+                    _thanhLySachRepository = new ThanhLySachRepository(_repositoryContext);
+                return _thanhLySachRepository;
             }
         }
         public Task SaveAsync() => _repositoryContext.SaveChangesAsync();
