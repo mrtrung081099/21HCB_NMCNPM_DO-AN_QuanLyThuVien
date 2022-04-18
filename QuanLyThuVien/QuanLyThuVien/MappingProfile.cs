@@ -2,6 +2,7 @@
 using Entities.DTO.DocGia;
 using Entities.DTO.NhanVien;
 using Entities.DTO.PhieuMuon;
+using Entities.DTO.PhieuPhat;
 using Entities.DTO.PhieuTra;
 using Entities.DTO.Sach;
 using Entities.DTO.User;
@@ -33,7 +34,8 @@ namespace QuanLyThuVien
             CreateMap<PhieuTra, PhieuTraDto>();
             CreateMap<CTPhieuTraForCreationDto, ChiTietPhieuTra>();
             CreateMap<SachMuonDto, ChiTietPhieuTra>();
-
+            CreateMap<PhieuPhatForCreationDto, PhieuPhat>();
+            CreateMap<PhieuPhat, PhieuPhatDto>();
             CreateMap<User, UserForView>()
                 .ForMember(x => x.BoPhan, opt => opt.MapFrom(x => x.NhanVien.BoPhan))
                 .ForMember(x => x.TenNhanVien, opt => opt.MapFrom(x => x.NhanVien.HoTen));

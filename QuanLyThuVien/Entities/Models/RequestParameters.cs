@@ -53,5 +53,9 @@ namespace Entities.Models
     {
 
     }
+    public class PhieuPhatParameters : RequestParameters
+    {
+
+    }
 
 }

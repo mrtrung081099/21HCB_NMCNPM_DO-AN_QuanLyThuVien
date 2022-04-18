@@ -22,10 +22,11 @@ namespace Entities
         public DbSet<PhieuMuon> PhieuMuons { get; set; }
         public DbSet<ChiTietPhieuMuon> ChiTietPhieuMuons { get; set; }
         public DbSet<PhieuTra> PhieuTras { get; set; }
-
         public DbSet<ChiTietPhieuTra> ChiTietPhieuTras { get; set; }
-
-        
+        public DbSet<PhieuPhat> PhieuPhats { get; set; }
+        public DbSet<PhieuMatSach> PhieuMatSachs { get; set; }
+        public DbSet<ThanhLySach> ThanhLySachs { get; set; }
+        public DbSet<ChiTietThanhLySach> ChiTietThanhLySachs { get; set; }
 
     }
 }

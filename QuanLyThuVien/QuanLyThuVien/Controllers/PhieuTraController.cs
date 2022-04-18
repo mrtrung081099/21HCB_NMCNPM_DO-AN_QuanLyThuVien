@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DTO.PhieuTra;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using QuanLyThuVien.Services.Interface;
 using System;
@@ -24,6 +25,13 @@ namespace QuanLyThuVien.Controllers
             _mapper = mapper;
             _logger = logger;
             _phieuTraService = phieuTraService;
+        }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllPhieuTra([FromQuery] PhieuTraParameters ptParameters)
+        {
+            var pts = await _phieuTraService.GetAllPhieuTraDtoAsync(ptParameters);
+            var total = await _repository.PhieuTra.CountPhieuTra();
+            return Ok(new { total = total, listPhieuTras = pts });
         }
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetPhieuTraById(Guid id)

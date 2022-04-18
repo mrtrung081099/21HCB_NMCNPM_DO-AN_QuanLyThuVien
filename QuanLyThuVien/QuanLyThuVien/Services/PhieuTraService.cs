@@ -55,15 +55,30 @@ namespace QuanLyThuVien.Services
         public async Task<PhieuTraDto> GetPhieuTraDtoByIdAsync(Guid id)
         {
             var pt = await _repository.PhieuTra.GetPhieuTraByIdAsync(id);
+            var pmDto = _mapper.Map<PhieuTraDto>(pt);
             if (pt != null)
             {
                 var sachtras = await _sachService.GetListSachTraByPtId(pt.Id);
                 var dg = await _repository.DocGia.GetDocGiaByIdAsync(pt.DocGiaId);
-                var pmDto = _mapper.Map<PhieuTraDto>(pt);
                 pmDto.TenDocGia = dg.HoTen;
                 pmDto.SachTras = sachtras;
-                return pmDto;
             }
+            return pmDto;
+        }
+
+        public async Task<IEnumerable<PhieuTraDto>> GetAllPhieuTraDtoAsync(PhieuTraParameters phieuTraParameters)
+        {
+            var pts = new List<PhieuTraDto>();
+            var listPt = await _repository.PhieuTra.GetAllPhieuTraAsync(phieuTraParameters);
+            var listPmDto = _mapper.Map(listPt, pts);
+            foreach (var pt in listPmDto)
+            {
+                var sachtras = await _sachService.GetListSachTraByPtId(pt.Id);
+                var dg = await _repository.DocGia.GetDocGiaByIdAsync(pt.DocGiaId);
+                pt.TenDocGia = dg.HoTen;
+                pt.SachTras = sachtras;
+            }
+            return listPmDto;
         }
     }
 }
