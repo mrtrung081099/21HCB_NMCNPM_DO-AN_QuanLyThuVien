@@ -17,8 +17,18 @@ export class SachService {
       headers: new HttpHeaders({ "Content-Type": "application/json" }),
     });
   }
+  GetAllByStateNoPaging(search:any) {
+    return this.http.get(environment.apiUrl + 'sachs/GetAllByState?Search='+search, {
+      headers: new HttpHeaders({ "Content-Type": "application/json" }),
+    });
+  }
   GetAllByName(pageNum:any,pageSize:any,search:any) {
     return this.http.get(environment.apiUrl + 'sachs/GetAllByName?PageNumber='+pageNum+'&PageSize='+pageSize+'&Search='+search, {
+      headers: new HttpHeaders({ "Content-Type": "application/json" }),
+    });
+  }
+  GetSachMuonByDocGiaId(docgiaId:any) {
+    return this.http.get(environment.apiUrl + 'sachs/GetSachMuonByDocgiaId/'+docgiaId, {
       headers: new HttpHeaders({ "Content-Type": "application/json" }),
     });
   }

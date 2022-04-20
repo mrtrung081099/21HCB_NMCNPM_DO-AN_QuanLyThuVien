@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -35,6 +34,8 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { SachComponent } from './sach/sach.component';
+import { PhieumuonComponent } from './phieumuon/phieumuon.component';
+import { PhieutraComponent } from './phieutra/phieutra.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -43,7 +44,9 @@ registerLocaleData(en);
     NhanvienComponent,
     DocgiaComponent,
     LoginComponent,
-      SachComponent
+      SachComponent,
+      PhieumuonComponent,
+      PhieutraComponent
    ],
   imports: [
     BrowserModule,
@@ -75,7 +78,11 @@ registerLocaleData(en);
       { path: 'login', component: LoginComponent,pathMatch: 'full' },
       { path: 'nhanviens', component: NhanvienComponent, pathMatch: 'full'},
       { path: 'docgias', component: DocgiaComponent, pathMatch: 'full' },
-      { path: 'sachs', component: SachComponent, pathMatch: 'full' }
+      { path: 'sachs', component: SachComponent, pathMatch: 'full' },
+      { path: 'phieumuons', component: PhieumuonComponent, pathMatch: 'full' },
+      { path: 'phieutras', component: PhieutraComponent, pathMatch: 'full' }
+
+
     ], {
       onSameUrlNavigation: 'reload'
     })

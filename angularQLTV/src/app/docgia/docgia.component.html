@@ -135,8 +135,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">Tổng nợ</nz-form-label>
         <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Tổng nợ">
-          <nz-input-number style="width: 100%;" formControlName="tongNo" name="required" required [nzMin]="1"
-            [nzStep]="1"></nz-input-number>
+          <input nz-input formControlName="tongNo" name="required" required />
         </nz-form-control>
       </nz-form-item>
     </form>

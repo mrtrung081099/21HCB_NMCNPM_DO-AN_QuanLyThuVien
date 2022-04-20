@@ -14,6 +14,8 @@ namespace Entities.DTO.PhieuTra
         public DateTime NgayTra { get; set; }
         public string TenDocGia { get; set; }
         public float TienPhat { get; set; }
+        public float TienNo { get; set; }
+        public float TongNo { get; set; }
         public List<SachMuonDto> SachTras { get; set; }
     }
 }

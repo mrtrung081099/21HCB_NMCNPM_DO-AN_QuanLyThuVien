@@ -30,7 +30,7 @@ namespace QuanLyThuVien.Services
             phieuphat.NgayThu = DateTime.Now;
             _repository.PhieuPhat.CreatePhieuPhat(phieuphat);   
             await _repository.SaveAsync();
-            await _docGiaService.UpdateTongNoNopTienPhatDocGia(phieuphat.DocGiaId, phieuphat.TienThu);
+            await _docGiaService.UpdateTongNoDocGia(phieuphat.DocGiaId, phieuphat.TienNoConlai);
             return await GetPhieuTraDtoByIdAsync(phieuphat.Id);
         }
 
