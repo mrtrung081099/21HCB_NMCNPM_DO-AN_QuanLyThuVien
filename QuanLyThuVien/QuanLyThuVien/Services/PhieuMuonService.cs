@@ -30,7 +30,6 @@ namespace QuanLyThuVien.Services
         public async Task<PhieuMuonDto> CreatePhieuMuonAsync(PhieuMuonForCreationDto pm)
         {
             var phieumuon = _mapper.Map<PhieuMuon>(pm);
-            phieumuon.NgayMuon = DateTime.Now;
             phieumuon.NgayHetHan = phieumuon.NgayMuon.AddDays(4);
             _repository.PhieuMuon.CreatePhieuMuon(phieumuon);
             await _repository.SaveAsync();

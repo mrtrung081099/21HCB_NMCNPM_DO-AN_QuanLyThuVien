@@ -106,8 +106,7 @@ namespace Repository
                         {
                             Id = s.Id,
                             Ten = s.Ten,
-                            NgayMuon = pt.NgayMuon,
-                            NgayHetHan = pt.NgayHetHan,
+                            NgayMuon = pt.NgayMuon
                         };
             var sachs = query.ToListAsync();
             return sachs;

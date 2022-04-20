@@ -11,7 +11,6 @@ namespace Entities.DTO.Sach
         public Guid Id { get; set; }
         public string Ten { get; set; }
         public DateTime NgayMuon { get; set; }
-        public DateTime NgayHetHan { get; set; }
         public int SoNgayMuon { get; set; }
         public float TienPhat { get; set; }
     }

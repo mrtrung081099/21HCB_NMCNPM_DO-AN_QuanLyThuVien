@@ -15,6 +15,8 @@ namespace Entities.Models
         public Guid DocGiaId { get; set; }
         public DateTime NgayTra { get; set; }
         public float TienPhat { get; set; }
+        public float TienNo { get; set; }
+        public float TongNo { get; set; }
         public DocGia DocGia { get; set; }
     }
 }

@@ -34,7 +34,6 @@ namespace QuanLyThuVien.Services
         public async Task<PhieuTraDto> CreatePhieuTraAsync(PhieuTraForCreationDto pt)
         {
             var phieutra = _mapper.Map<PhieuTra>(pt);
-            phieutra.NgayTra = DateTime.Now;
             _repository.PhieuTra.CreatePhieuTra(phieutra);
             await _repository.SaveAsync();
             if (pt.SachTras != null)
@@ -46,7 +45,7 @@ namespace QuanLyThuVien.Services
                     await _ctpmService.UpdateCTPhieuMuonAsync(ctpt.Id, "Đã Trả");
                 }
             }
-            await _docGiaService.UpdateTongNoDocGia(phieutra.DocGiaId, phieutra.TienPhat);
+            await _docGiaService.UpdateTongNoDocGia(phieutra.DocGiaId, phieutra.TongNo);
             var result = await GetPhieuTraDtoByIdAsync(phieutra.Id);
 
             return result;

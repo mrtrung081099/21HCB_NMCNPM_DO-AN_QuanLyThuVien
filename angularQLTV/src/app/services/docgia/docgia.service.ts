@@ -26,7 +26,11 @@ export class DocgiaService {
       headers: new HttpHeaders({ "Content-Type": "application/json" }),
     });
   }
-
+  GetAllDocGiaNoPaging() {
+    return this.http.get(environment.apiUrl + 'docgias/GetAll', {
+      headers: new HttpHeaders({ "Content-Type": "application/json" }),
+    });
+  }
   CreateDocGia(val: DocGiaForCreationUpdateDto) {
     return this.http.post(environment.apiUrl + "docgias/CreateDocGia", JSON.stringify(val), {
       headers: new HttpHeaders({

@@ -1,0 +1,121 @@
+.save {
+  margin-right: 8px;
+}
+
+.btnDel{
+  margin-left: 5px;
+  color: red;
+}
+.btnAdd{
+  display: flex;
+  margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+.ant-btn:hover, .ant-btn:focus {
+  color: #52c41a;
+  border-color: #52c41a;
+}
+
+.datePickerForm{
+  width: 100%;
+}
+nz-pagination{
+  margin: 1rem 1rem 0 0;
+}
+.paging{
+  display: flex;
+  justify-content: space-between;
+  h3{
+      margin-top: 19px;
+  }
+}
+.search{
+  display: flex;
+  .searchInput{
+      width: 250px;
+  }
+  button{
+      margin-left: 0.5rem;
+  }
+}
+.stt{
+  width: 5%;
+}
+.sttTableCreate{
+  width: 7%;
+}
+.edit{
+  margin-left: 5px;
+}
+.infoPhieuMuon{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  .col{
+    width: 30%;
+    .row{
+      margin-bottom: 10px;
+      display: flex;
+      h4{
+        margin-right: 5px;
+      }
+    }
+  }
+}
+.searchState{
+  width: 200px;
+  margin-left: 10px;
+}
+.title{
+  display: flex;
+  justify-content: space-around;
+}
+nz-form-item{
+  width: 100%;
+}
+.formItem{
+  display: flex;
+}
+.formNgaymuon{
+  display: flex;
+  justify-content: flex-start;
+}
+.selectSachMuon{
+  width: 90%;
+}
+#tableCreate{
+  ::ng-deep .ant-table-tbody > tr.ant-table-placeholder {
+    display: none;
+  }
+}
+.themSachMuon{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+.maSach{
+  width: 20%;
+}
+.thaoTac{
+  width: 10%;
+}
+.btnDel{
+  margin-left: 5px;
+  color: red;
+}
+.tacGia{
+  width: 20%;
+}
+nz-date-picker{
+  width: 100%;
+}
+.colForm{
+  width: 100%;
+}
+.rowForm{
+  display: flex;
+  margin-left: 5.8rem;
+  p{
+    margin-left: 5px;
+  }
+}

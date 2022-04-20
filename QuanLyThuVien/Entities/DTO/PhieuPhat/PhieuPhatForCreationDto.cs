@@ -10,6 +10,8 @@ namespace Entities.DTO.PhieuPhat
     {
         public Guid DocGiaId { get; set; }
         public Guid NhanVienId { get; set; }
+        public float TienNo { get; set; }
         public float TienThu { get; set; }
+        public float TienNoConlai { get; set; }
     }
 }
