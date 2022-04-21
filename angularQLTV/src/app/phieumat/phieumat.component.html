@@ -20,29 +20,29 @@
     </div>
     <button nz-button (click)="showModalCreate()">
       <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
-      Thu tiền phạt
+      Ghi nhận mất sách
     </button>
   </div>
-  <div class="title"><h1>Lịch Sử Thu Tiền Phạt</h1></div>
-  <nz-table nzBordered [nzData]="listPhieuPhat" [nzShowPagination]="false" nzTableLayout="fixed">
+  <div class="title"><h1>Lịch Sử Ghi Nhận Mất Sách</h1></div>
+  <nz-table nzBordered [nzData]="listPhieuMat" [nzShowPagination]="false" nzTableLayout="fixed">
     <thead>
       <tr>
         <th class="stt">STT</th>
         <th>Tên Độc Giả</th>
-        <th>Ngày Thu</th>
+        <th>Ngày Ghi Nhận</th>
         <th>Người Thu Tiền</th>
         <th class="thaoTac">Thao Tác</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of listPhieuPhat; index as i" >
+      <tr *ngFor="let data of listPhieuMat; index as i" >
         <ng-container>
           <td>{{i+1}}</td>
           <td>{{ data.tenDocGia}}</td>
-          <td>{{ data.ngayThu | date:'dd/MM/yyyy'}}</td>
+          <td>{{ data.ngayGhiNhan | date:'dd/MM/yyyy'}}</td>
           <td>{{ data.tenNhanVien}}</td>
           <td>
-            <a (click)="getDetailPhieuPhat(data)">Chi Tiết</a>
+            <a (click)="getDetailPhieuMat(data)">Chi Tiết</a>
             <!-- <a class="edit">Sửa</a>
             <a class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?">Xóa</a> -->
           </td>
@@ -57,7 +57,7 @@
 </div>
 <nz-modal
       [(nzVisible)]="isVisible"
-      nzTitle="Lập Phiếu Trả Sách"
+      nzTitle="Lập Phiếu Ghi Nhận Mất Sách"
       (nzOnCancel)="handleCancelModalCreate()"
       (nzOnOk)="handleOk()"
       [nzOkLoading]="isOkLoading"
@@ -66,7 +66,7 @@
       <form class="formItem" nz-form [formGroup]="createForm" id="formCreate">
           <div class="colForm">
             <nz-form-item>
-              <nz-form-label [nzSpan]="8">Họ tên</nz-form-label>
+              <nz-form-label [nzSpan]="8">Họ tên độc giả</nz-form-label>
               <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên độc giả">
                 <nz-select (ngModelChange)="onSelectDocGia($event)" formControlName="docGiaId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên tên độc giả" name="required" required>
                   <nz-option *ngFor="let b of listDocGia" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
@@ -74,17 +74,35 @@
               </nz-form-control>
             </nz-form-item>
           </div>
+          <div class="colForm">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8">Tên Sách</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên độc giả">
+                <nz-select (ngModelChange)="onSelectSach($event)" formControlName="sachId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên tên độc giả" name="required" required>
+                  <nz-option *ngFor="let b of listSach" [nzValue]="b.id" [nzLabel]="b.ten"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div class="colForm">
+            <nz-form-item class="formNgaymuon">
+              <nz-form-label [nzSpan]="8">Ngày ghi nhận</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập ghi nhận">
+                <nz-date-picker formControlName="ngayGhiNhan" nzPlaceHolder="Nhập ghi nhận" name="required" required></nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+           </div>
          <div class="colForm">
           <nz-form-item class="formNgaymuon">
-            <nz-form-label [nzSpan]="8">Tiền thu</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tiền thu">
-              <nz-input-number (ngModelChange)="onChangeTienThu($event)" formControlName="tienThu" [nzMin]="0"></nz-input-number>
+            <nz-form-label [nzSpan]="8">Tiền Phạt</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tiền phạt">
+              <nz-input-number formControlName="tienPhat" [nzMin]="0"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
          </div>
          <div class="colForm">
           <nz-form-item class="formNgaymuon">
-            <nz-form-label [nzSpan]="8">Người thu tiền</nz-form-label>
+            <nz-form-label [nzSpan]="8">Người ghi nhận</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên nhân viên">
               <nz-select formControlName="nhanVienId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên nhân viên" name="required" required>
                 <nz-option *ngFor="let b of listNhanVien" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
@@ -93,10 +111,6 @@
           </nz-form-item>
          </div>
        </form>
-       <div class="colForm">
-        <div class="rowForm"><p>Tiền nợ:</p><p>{{tienNo}} đồng</p></div>
-        <div class="rowForm"><p>Còn lại:</p><p>{{tienNoConlai}} đồng</p></div>
-      </div>
       </div>
     <div *nzModalFooter>
       <button nz-button nzType="default" (click)="handleCancelModalCreate()">Hủy</button>
@@ -106,7 +120,7 @@
 </nz-modal>
 <nz-modal
       [(nzVisible)]="isShowDetai"
-      nzTitle="Phiếu Thu Tiền Phạt"
+      nzTitle="Ghi Nhận Mất Sách"
       (nzOnCancel)="handleCancel2()"
       [nzOkLoading]="isOkLoading"
       [nzFooter] = null
@@ -114,11 +128,11 @@
     <div *nzModalContent >
       <div class="infoPhieuMuon">
         <div class="col">
-          <div class="row"><h4>Họ tên: </h4><p>{{phieuPhatInFo.tenDocGia}}</p></div>
-          <div class="row"><h4>Tiền nợ: </h4><p>{{phieuPhatInFo.tienNo}} đồng</p></div>
-          <div class="row"><h4>Số tiền thu: </h4><p>{{phieuPhatInFo.tienThu}} đồng</p></div>
-          <div class="row"><h4>Còn lại: </h4><p>{{phieuPhatInFo.tienNoConlai}} đồng</p></div>
-          <div class="row"><h4>Người thu tiền: </h4><p>{{phieuPhatInFo.tenNhanVien}}</p></div>
+          <div class="row"><h4>Tên Sách: </h4><p>{{phieuMatInFo.tenSach}}</p></div>
+          <div class="row"><h4>Ngày ghi nhận: </h4><p>{{phieuMatInFo.ngayGhiNhan| date:'dd/MM/yyyy'}}</p></div>
+          <div class="row"><h4>Họ tên độc giả: </h4><p>{{phieuMatInFo.tenDocGia}}</p></div>
+          <div class="row"><h4>Tiền Phạt: </h4><p>{{phieuMatInFo.tienPhat}} đồng</p></div>
+          <div class="row"><h4>Người ghi nhận: </h4><p>{{phieuMatInFo.tenNhanVien}}</p></div>
         </div>
       </div>
     </div>

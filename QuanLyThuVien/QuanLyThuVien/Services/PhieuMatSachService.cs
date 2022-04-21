@@ -17,13 +17,16 @@ namespace QuanLyThuVien.Services
         private readonly IMapper _mapper;
         private readonly IDocGiaService _docGiaService;
         private readonly ISachService _sachService;
-        public PhieuMatSachService(IRepositoryManager repository, IMapper mapper, ILoggerManager logger, IDocGiaService docGiaService, ISachService sachService)
+        private readonly ICTPhieuMuonService _ctpmService;
+
+        public PhieuMatSachService(IRepositoryManager repository, IMapper mapper, ILoggerManager logger, IDocGiaService docGiaService, ISachService sachService, ICTPhieuMuonService ctpmService)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
             _docGiaService = docGiaService;
             _sachService = sachService;
+            _ctpmService = ctpmService;
         }
 
         public async Task<List<PhieuMatSachDto>> GetAllPhieuMatSachDtoAsync(PhieuMatSachParameters phieuMatSachParameters)
@@ -36,7 +39,18 @@ namespace QuanLyThuVien.Services
             var phieumatsach = _mapper.Map<PhieuMatSach>(phieuMatSach);
             _repository.PhieuMatSach.CreatePhieuMatSach(phieumatsach);
             await _repository.SaveAsync();
-            await _docGiaService.UpdateTongNoDocGia(phieumatsach.DocGiaId, phieumatsach.TienPhat);
+            await _docGiaService.UpdateTongNoDocGiaMatSach(phieumatsach.DocGiaId, phieumatsach.TienPhat);
+            var sachMuon = await _repository.Sach.GetAllSachMuonByDocGiaIdAsync(phieumatsach.DocGiaId);
+            if (sachMuon != null)
+            {
+                foreach (var i in sachMuon)
+                {
+                    if (i.Id == phieumatsach.SachId)
+                    {
+                        await _ctpmService.UpdateCTPhieuMuonAsync(i.Id, "Đã Trả");
+                    }
+                }
+            }
             await _sachService.UpdateStateSachAsync(phieumatsach.SachId, "Đã Mất");
             return await GetPhieuMatSachDtoByIdAsync(phieumatsach.Id);
         }

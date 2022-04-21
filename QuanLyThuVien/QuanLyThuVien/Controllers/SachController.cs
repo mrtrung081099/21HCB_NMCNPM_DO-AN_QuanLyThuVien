@@ -34,6 +34,12 @@ namespace QuanLyThuVien.Controllers
             var total = await _repository.Sach.Count();
             return Ok(new { total = total, listSachs = sach });
         }
+        [HttpGet("GetAllForThanhLy")]
+        public async Task<IActionResult> GetAllSachThanhLy()
+        {
+            var sach = await _repository.Sach.GetAllSachForThanhLyAsync();
+            return Ok(sach);
+        }
         [HttpGet("GetAllByState")]
         public async Task<IActionResult> GetAllByState([FromQuery] SachParameters sachParameters)
         {

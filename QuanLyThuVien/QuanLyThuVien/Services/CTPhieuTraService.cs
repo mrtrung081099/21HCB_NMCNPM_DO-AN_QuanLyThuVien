@@ -36,7 +36,8 @@ namespace QuanLyThuVien.Services
 
         public async Task CreateCtptAsync(SachMuonDto ctpt, Guid ptId)
         {
-            var chitietpt = _mapper.Map<ChiTietPhieuTra>(ctpt);
+            var chitietDto = _mapper.Map<CTPhieuTraForCreationDto>(ctpt);
+            var chitietpt = _mapper.Map<ChiTietPhieuTra>(chitietDto);
             chitietpt.PhieuTraId = ptId;
             chitietpt.SachId = ctpt.Id;
             _repository.CTPhieuTra.CreateCTPhieuTra(chitietpt);
