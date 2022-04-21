@@ -64,7 +64,7 @@ export class PhieutraComponent implements OnInit {
       if(res.length>0){
         this.listSach = res;
       }else{
-        this.message.create('warning', "Độc giả chưa mượn sách");
+        this.message.create('warning', "Độc giả không có sách mượn");
       }
     }, (err) => {
       console.log(err);
