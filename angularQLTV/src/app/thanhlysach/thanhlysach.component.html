@@ -20,31 +20,29 @@
     </div>
     <button nz-button (click)="showModalCreate()">
       <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
-      Lập phiếu trả sách
+      Thanh Lý Sách
     </button>
   </div>
-  <div class="title"><h1>Lịch Sử Trả Sách</h1></div>
-  <nz-table nzBordered [nzData]="listPhieuTra" [nzShowPagination]="false" nzTableLayout="fixed">
+  <div class="title"><h1>Lịch Sử Thanh Lý Sách</h1></div>
+  <nz-table nzBordered [nzData]="listThanhLySach" [nzShowPagination]="false" nzTableLayout="fixed">
     <thead>
       <tr>
         <th class="stt">STT</th>
-        <th>Tên Độc Giả</th>
-        <th>Ngày Trả</th>
+        <th>Người Thanh Lý</th>
+        <th>Ngày Thanh Lý</th>
         <th>Số Lượng Sách</th>
-        <th>Tiền phạt</th>
         <th class="thaoTac">Thao Tác</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of listPhieuTra; index as i" >
+      <tr *ngFor="let data of listThanhLySach; index as i" >
         <ng-container>
           <td>{{i+1}}</td>
-          <td>{{ data.tenDocGia}}</td>
-          <td>{{ data.ngayTra | date:'dd/MM/yyyy'}}</td>
-          <td>{{ data.sachTras.length}}</td>
-          <td>{{ data.tienPhat}} đồng</td>
+          <td>{{ data.tenNhanVien}}</td>
+          <td>{{ data.ngayThanhLy | date:'dd/MM/yyyy'}}</td>
+          <td>{{ data.sachThanhLys.length}}</td>
           <td>
-            <a (click)="getDetailPhieuTra(data)">Chi Tiết</a>
+            <a (click)="getDetailThanhLySach(data)">Chi Tiết</a>
             <!-- <a class="edit">Sửa</a>
             <a class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?">Xóa</a> -->
           </td>
@@ -59,7 +57,7 @@
 </div>
 <nz-modal
       [(nzVisible)]="isVisible"
-      nzTitle="Lập Phiếu Trả Sách"
+      nzTitle="Lập Phiếu Thanh Lý Sách"
       (nzOnCancel)="handleCancelModalCreate()"
       (nzOnOk)="handleOk()"
       [nzOkLoading]="isOkLoading"
@@ -67,55 +65,39 @@
     >
     <div *nzModalContent>
       <form class="formItem" nz-form [formGroup]="createForm" id="formCreate">
-          <div class="colForm">
-            <nz-form-item>
-              <nz-form-label [nzSpan]="8">Họ tên độc giả</nz-form-label>
-              <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên tên độc giả">
-                <nz-select (ngModelChange)="onSelectDocGia($event)" formControlName="docGiaId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên tên độc giả" name="required" required>
-                  <nz-option *ngFor="let b of listDocGia" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
-                </nz-select>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-         <div class="colForm">
-          <nz-form-item class="formNgaymuon">
-            <nz-form-label [nzSpan]="8">Ngày trả</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="8" nzErrorTip="Nhập ngày trả">
-              <nz-date-picker formControlName="ngayTra" nzPlaceHolder="Nhập ngày trả" name="required" required></nz-date-picker>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="8">Họ tên người thanh lý</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên người thanh lý">
+              <nz-select formControlName="nhanVienId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên người thanh lý" name="required" required>
+                <nz-option *ngFor="let b of listNhanVien" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
-         </div>
+          <nz-form-item class="formNgaymuon">
+            <nz-form-label [nzSpan]="8">Ngày thanh lý</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSpan]="8" nzErrorTip="Nhập ngày mượn">
+              <nz-date-picker formControlName="ngayThanhLy" nzPlaceHolder="Nhập ngày mượn" name="required" required></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
         </form>
-        <div class="formItem">
-          <div class="colForm"></div>
-          <div class="colForm">
-            <div class="rowForm"><h4>Tiền phạt kỳ này: </h4><p>{{tienPhat}} đồng</p></div>
-            <div class="rowForm"><h4>Tiền nợ: </h4><p>{{tienNo}} đồng</p></div>
-            <div class="rowForm"><h4>Tổng nợ: </h4><p>{{tongNo}} đồng</p></div>
-          </div>
-        </div>
-        <nz-table id="tableCreate" #editRowTable  nzBordered [nzShowPagination]="false" >
+        <nz-table id="tableCreate" #editRowTable nzBordered [nzShowPagination]="false" >
           <thead>
             <tr>
               <th class="sttTableCreate">STT</th>
               <th class="maSach">Mã Sách</th>
               <th>Tên Sách</th>
-              <th>Ngày Mượn</th>
-              <th>Số Ngày Mượn</th>
-              <th>Tiền Phạt</th>
+              <th>Lý Do Thanh Lý</th>
               <th class="thaoTac">Thao Tác</th>
 
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of listSachTraTemp; index as i" >
+            <tr *ngFor="let data of listSachThanhLyTemp; index as i" >
               <ng-container>
                 <td>{{i+1}}</td>
-                <td>{{ data.id}}</td>
-                <td>{{ data.ten}}</td>
-                <td>{{ data.ngayMuon | date:'dd/MM/yyyy'}}</td>
-                <td>{{ data.soNgayMuon }}</td>
-                <td>{{ data.tienPhat }}</td>
+                <td>{{ data.sachId}}</td>
+                <td>{{ data.tenSach}}</td>
+                <td>{{ data.lyDoThanhLy}}</td>
                 <td><a class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?" (nzOnConfirm)="delSach(data)">Xóa</a></td>
               </ng-container>
             </tr>
@@ -124,14 +106,14 @@
                 <td></td>
                 <td></td>
                 <td>
-                  <nz-select class="selectSachMuon" nzShowSearch nzAllowClear nzPlaceHolder="Nhập sách đã mượn" [(ngModel)]="selectSach" (ngModelChange)="onChangeListSachTemp($event)">
+                  <nz-select class="selectSachMuon" nzShowSearch nzAllowClear nzPlaceHolder="Nhập sách cần thanh lý" [(ngModel)]="selectSach" (ngModelChange)="onChangeListSachTemp($event)">
                     <nz-option *ngFor="let b of listSach" [nzValue]="b" [nzLabel]="b.ten"></nz-option>
                   </nz-select>
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td ><a *ngIf="listSachTraTemp.length>0" class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?" (nzOnConfirm)="cancel()">Hủy</a></td>
+                <td><nz-select class="selectSachMuon" nzShowSearch nzAllowClear nzPlaceHolder="Nhập lý do thanh lý" [(ngModel)]="selectLyDo" (ngModelChange)="onChangeLyDo($event)">
+                  <nz-option *ngFor="let b of listLyDo" [nzValue]="b" [nzLabel]="b"></nz-option>
+                </nz-select></td>
+                <td ><a *ngIf="listSachThanhLyTemp.length>0" class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?" (nzOnConfirm)="cancel()">Hủy</a></td>
               </ng-container>
             </tr>
           </tbody>
@@ -151,7 +133,7 @@
 </nz-modal>
 <nz-modal
       [(nzVisible)]="isShowDetai"
-      nzTitle="Phiếu Trả Sách"
+      nzTitle="Thanh Lý Sách"
       (nzOnCancel)="handleCancel2()"
       [nzOkLoading]="isOkLoading"
       [nzFooter] = null
@@ -160,13 +142,10 @@
     <div *nzModalContent >
       <div class="infoPhieuMuon">
         <div class="col">
-          <div class="row"><h4>Họ tên độc giả: </h4><p>{{phieuTraInFo.tenDocGia}}</p></div>
+          <div class="row"><h4>Họ tên người thanh lý: </h4><p>{{thanhLySachInFo.tenNhanVien}}</p></div>
         </div>
         <div class="col">
-          <div class="row"><h4>Ngày Trả: </h4><p>{{phieuTraInFo.ngayTra | date:'dd/MM/yyyy'}}</p></div>
-          <div class="row"><h4>Tiền phạt kỳ này: </h4><p>{{phieuTraInFo.tienPhat}} đồng</p></div>
-          <div class="row"><h4>Tiền nợ: </h4><p>{{phieuTraInFo.tienNo}} đồng</p></div>
-          <div class="row"><h4>Tổng nợ: </h4><p>{{phieuTraInFo.tongNo}} đồng</p></div>
+          <div class="row"><h4>Ngày thanh lý: </h4><p>{{thanhLySachInFo.ngayThanhLy | date:'dd/MM/yyyy'}}</p></div>
         </div>
       </div>
       <div >
@@ -176,20 +155,16 @@
               <th class="sttTableCreate">STT</th>
               <th class="maSach">Mã Sách</th>
               <th>Tên Sách</th>
-              <th>Ngày Mượn</th>
-              <th>Số Ngày Mượn</th>
-              <th class="tacGia">Tiền Phạt</th>
+              <th>Lý Do Thanh Lý</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of phieuTraInFo.sachTras; index as i" >
+            <tr *ngFor="let data of thanhLySachInFo.sachThanhLys; index as i" >
               <ng-container>
                 <td>{{i+1}}</td>
-                <td>{{ data.id}}</td>
-                <td>{{ data.ten}}</td>
-                <td>{{ data.ngayMuon | date:'dd/MM/yyyy'}}</td>
-                <td>{{ data.soNgayMuon }}</td>
-                <td>{{ data.tienPhat }} đồng</td>
+                <td>{{ data.sachId}}</td>
+                <td>{{ data.tenSach}}</td>
+                <td>{{ data.lyDoThanhLy}}</td>
               </ng-container>
             </tr>
           </tbody>

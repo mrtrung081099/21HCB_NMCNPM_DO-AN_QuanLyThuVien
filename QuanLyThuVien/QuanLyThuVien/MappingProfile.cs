@@ -36,6 +36,7 @@ namespace QuanLyThuVien
             CreateMap<PhieuTra, PhieuTraDto>();
             CreateMap<CTPhieuTraForCreationDto, ChiTietPhieuTra>();
             CreateMap<SachMuonDto, ChiTietPhieuTra>();
+            CreateMap<SachMuonDto, CTPhieuTraForCreationDto>();
             CreateMap<PhieuPhatForCreationDto, PhieuPhat>();
             CreateMap<PhieuPhat, PhieuPhatDto>();
             CreateMap<PhieuMatSachForCreationDto, PhieuMatSach>();

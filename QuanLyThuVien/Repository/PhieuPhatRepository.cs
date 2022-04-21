@@ -35,7 +35,7 @@ namespace Repository
         public async Task<IEnumerable<PhieuPhat>> GetAllPhieuPhatAsync(PhieuPhatParameters phieuphatParameters)
         {
             List<PhieuPhat> phieuPhats;
-            phieuPhats = await FindAll().OrderBy(e => e.NgayThu)
+            phieuPhats = await FindAll().OrderByDescending(e => e.NgayThu)
                 .Skip((phieuphatParameters.PageNumber - 1) * phieuphatParameters.PageSize)
                 .Take(phieuphatParameters.PageSize)
                 .ToListAsync();

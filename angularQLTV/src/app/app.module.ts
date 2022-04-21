@@ -36,6 +36,9 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { SachComponent } from './sach/sach.component';
 import { PhieumuonComponent } from './phieumuon/phieumuon.component';
 import { PhieutraComponent } from './phieutra/phieutra.component';
+import { PhieuphatComponent } from './phieuphat/phieuphat.component';
+import { PhieumatComponent } from './phieumat/phieumat.component';
+import { ThanhlysachComponent } from './thanhlysach/thanhlysach.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -44,9 +47,12 @@ registerLocaleData(en);
     NhanvienComponent,
     DocgiaComponent,
     LoginComponent,
-      SachComponent,
-      PhieumuonComponent,
-      PhieutraComponent
+    SachComponent,
+    PhieumuonComponent,
+    PhieutraComponent,
+    PhieuphatComponent,
+      PhieumatComponent,
+      ThanhlysachComponent
    ],
   imports: [
     BrowserModule,
@@ -80,9 +86,10 @@ registerLocaleData(en);
       { path: 'docgias', component: DocgiaComponent, pathMatch: 'full' },
       { path: 'sachs', component: SachComponent, pathMatch: 'full' },
       { path: 'phieumuons', component: PhieumuonComponent, pathMatch: 'full' },
-      { path: 'phieutras', component: PhieutraComponent, pathMatch: 'full' }
-
-
+      { path: 'phieutras', component: PhieutraComponent, pathMatch: 'full' },
+      { path: 'phieuphats', component: PhieuphatComponent, pathMatch: 'full' },
+      { path: 'phieumats', component: PhieumatComponent, pathMatch: 'full' },
+      { path: 'thanhlysachs', component: ThanhlysachComponent, pathMatch: 'full' }
     ], {
       onSameUrlNavigation: 'reload'
     })

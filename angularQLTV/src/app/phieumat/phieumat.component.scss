@@ -52,13 +52,13 @@ nz-pagination{
   width: 100%;
   justify-content: center;
   .col{
-    width: 30%;
+    width: 100%;
+    margin-left: 7rem;
     .row{
       margin-bottom: 10px;
       display: flex;
-      justify-content: space-evenly;
       h4{
-        margin-right: 5px;
+        margin-right: 10px;
       }
     }
   }
@@ -72,14 +72,15 @@ nz-pagination{
   justify-content: space-around;
 }
 nz-form-item{
-  width: 100%;
+  width: 90%;
 }
 .formItem{
   display: flex;
+  flex-direction: column;
 }
 .formNgaymuon{
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 .selectSachMuon{
   width: 90%;
@@ -95,7 +96,7 @@ nz-form-item{
   margin-top: 5px;
 }
 .maSach{
-  width: 30%;
+  width: 20%;
 }
 .thaoTac{
   width: 10%;
@@ -107,6 +108,16 @@ nz-form-item{
 .tacGia{
   width: 20%;
 }
-nz-date-picker{
+nz-date-picker,nz-input-number{
   width: 100%;
+}
+.colForm{
+  width: 100%;
+}
+.rowForm{
+  display: flex;
+  margin-left: 5rem;
+  p{
+    margin-left: 5px;
+  }
 }

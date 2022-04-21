@@ -46,7 +46,14 @@ namespace Repository
                                         .ToListAsync();
             return sachs;
         }
-
+        public async Task<IEnumerable<Sach>> GetAllSachForThanhLyAsync()
+        {
+            List<Sach> sachs;
+            sachs = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý") && !x.TinhTrang.Contains("Đã Mượn"))
+                                        .OrderBy(e => e.Ten)
+                                        .ToListAsync();
+            return sachs;
+        }
         public async Task<Sach> GetSachByIdAsync(Guid id)
         {
             var sach = await FindByCondition(x => x.Id.Equals(id)).SingleOrDefaultAsync();

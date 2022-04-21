@@ -56,7 +56,6 @@ export class PhieumuonComponent implements OnInit {
     this.isVisible = false;
     this.listSachMuonTemp = [];
     this.listSachMuon = [];
-
   }
   handleOk(){
     if(this.createForm.valid && this.listSachMuon.length > 0){
