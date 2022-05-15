@@ -86,7 +86,7 @@
           <nz-form-item class="formNgaymuon">
             <nz-form-label [nzSpan]="8">Người thu tiền</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên nhân viên">
-              <nz-select formControlName="nhanVienId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên nhân viên" name="required" required>
+              <nz-select (ngModelChange)="onChangeNhanVien($event)" formControlName="nhanVienId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên nhân viên" name="required" required>
                 <nz-option *ngFor="let b of listNhanVien" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
               </nz-select>
             </nz-form-control>

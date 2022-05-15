@@ -15,8 +15,13 @@ export class NhanvienComponent implements OnInit {
   search:string | null = null;
   listNhanVien:any;
   currentUser:any;
+  infoNhanVienSimple:any;
+  tempId:any;
   isVisible = false;
   isOkLoading = false;
+  isShowInfoNhanVien = false;
+  isCreate:boolean=false;
+  isUpdate:boolean=false;
   arrBangCap: Array<string> = ["Cao Đẳng","Đại Học","Thạc Sĩ","Tiến Sĩ","Tú Tài"];
   arrBoPhan: Array<string> = ["Thủ Kho","Thủ Thư","Thủ Quỹ","Ban Giám Đốc"];
   arrChucVu: Array<string> = ["Nhân Viên","Phó Phòng","Trưởng Phòng","Phó Giám Đốc","Giám Đốc"];
@@ -25,18 +30,20 @@ export class NhanvienComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.getAllNhanViens();
-    this.createForm = this.fb.group({
-      hoTen: ["", Validators.required],
-      diaChi: ["", Validators.required],
-      ngaySinh: ["", Validators.required],
-      sdt: ["", Validators.required],
-      bangCap: ["", Validators.required],
-      boPhan: ["", Validators.required],
-      chucVu: ["", Validators.required]
-    });
   }
-  startEdit(id: string): void {
-    this.editCache[id].edit = true;
+  startEdit(data: any): void {
+    this.tempId= data.id;
+    this.createForm = this.fb.group({
+      hoTen: [data.hoTen, Validators.required],
+      diaChi: [data.diaChi, Validators.required],
+      ngaySinh: [data.ngaySinh, Validators.required],
+      sdt: [data.sdt, Validators.required],
+      bangCap: [data.bangCap, Validators.required],
+      boPhan: [data.boPhan, Validators.required],
+      chucVu: [data.chucVu, Validators.required]
+    });
+    this.isUpdate = true;
+    this.isVisible = true;
   }
 
   cancelEdit(id: string): void {
@@ -47,17 +54,31 @@ export class NhanvienComponent implements OnInit {
     };
   }
 
-  saveEdit(id: string): void {
-    const index = this.listNhanVien.findIndex((item:any) => item.id === id);
-    Object.assign(this.listNhanVien[index], this.editCache[id].data);
-    this.nhanvienService.UpdateNhanVien(id,this.listNhanVien[index]).subscribe((res:any) => {
-      this.message.create('success', "Sửa thành công");
-      this.editCache[id].edit = false;
-    },
-    (err) => {
-      console.log(err);
-      this.message.create('error', "Đã có lỗi xảy ra");
-    });
+  saveEdit(): void {
+    const index = this.listNhanVien.findIndex((item:any) => item.id === this.tempId);
+    if(this.createForm.valid){
+      this.isOkLoading = true;
+      this.nhanvienService.UpdateNhanVien(this.tempId,this.createForm.value).subscribe((res:any) => {
+        this.message.create('success', "Sửa thành công");
+        Object.assign(this.listNhanVien[index], res);
+        this.isVisible = false;
+        this.isUpdate=false;
+        this.isOkLoading = false;
+      },
+      (err) => {
+        console.log(err);
+        this.message.create('error', "Đã có lỗi xảy ra");
+      });
+    }
+    else{
+      this.message.create('warning', "Vui lòng điền đủ thông tin");
+      Object.values(this.createForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 
   updateEditCache(): void {
@@ -95,6 +116,16 @@ export class NhanvienComponent implements OnInit {
 
   showModal(): void {
     this.isVisible = true;
+    this.isCreate = true;
+    this.createForm = this.fb.group({
+      hoTen: ["", Validators.required],
+      diaChi: ["", Validators.required],
+      ngaySinh: ["", Validators.required],
+      sdt: ["", Validators.required],
+      bangCap: ["", Validators.required],
+      boPhan: ["", Validators.required],
+      chucVu: ["", Validators.required]
+    });
   }
 
   handleOk(): void {
@@ -139,5 +170,17 @@ export class NhanvienComponent implements OnInit {
       this.search = null;
       this.getAllNhanViens();
     }
+  }
+  showInfoSach(data:any){
+    this.isShowInfoNhanVien = true;
+    this.infoNhanVienSimple=data;
+  }
+  handleCancelInfo(){
+    this.isShowInfoNhanVien = false;
+  }
+  handleCancelModalCreate(): void {
+    this.isVisible = false;
+    this.isCreate = false;
+    this.isUpdate = false;
   }
 }

@@ -96,9 +96,7 @@ export class ThanhlysachComponent implements OnInit {
   }
   handleOk(){
     if(this.createForm.valid && this.listSachThanhLy.length > 0){
-      console.log(this.createForm.value);
       this.thanhlysachService.CreateThanhLySach(this.createForm.value).subscribe((res: any) => {
-        console.log(res);
         this.message.create('success', "Thêm phiếu mượn thành công");
         this.listSachThanhLy=[];
         this.listSachThanhLyTemp=[];
@@ -170,6 +168,17 @@ export class ThanhlysachComponent implements OnInit {
       this.listSachThanhLyTemp.push(this.dataSachTemp);
       this.listSachThanhLy.push(this.dataSachThanhLyTemp);
       this.isAddSach = false;
+    }
+  }
+  onChangeNhanVien(nhanVienId:any){
+    if(nhanVienId != ''){
+      const index = this.listNhanVien.findIndex(
+      (item: any) => item.id === nhanVienId
+      );
+      if(this.listNhanVien[index].boPhan != 'Thủ Kho'){
+        this.message.create('error', "Người thanh lý sách phải là nhân viên thuộc bộ phận thủ kho");
+        this.createForm.controls['nhanVienId'].setValue('');
+      }
     }
   }
 }

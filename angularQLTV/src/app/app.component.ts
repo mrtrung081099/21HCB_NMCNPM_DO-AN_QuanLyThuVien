@@ -22,7 +22,7 @@ export class AppComponent {
     var user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (user.id) {
       this.isLogin = false;
-      this.tenNhanVien = user.tenNhanVien;
+      this.tenNhanVien = user.email;
     } else {
       this.router.navigate(['login']);
       this.isLogin = true;

@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   remember = false;
   errorList: any;
   constructor(private fb: FormBuilder,private authService: AuthService, private rout : Router,private message: NzMessageService) { }
-  
+
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ["", Validators.required],
@@ -24,8 +24,6 @@ export class LoginComponent implements OnInit {
   submitForm(loginData:any): void {
     if (this.loginForm.valid) {
       this.errorList = [];
-      console.log(loginData);
-      
       this.authService.Login(loginData).subscribe(
         (res) => {
           this.message.create('success', "Đăng nhập thành công");

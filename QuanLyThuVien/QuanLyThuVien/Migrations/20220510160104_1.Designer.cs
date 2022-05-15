@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace QuanLyThuVien.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220418045106_update")]
-    partial class update
+    [Migration("20220510160104_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,6 +249,12 @@ namespace QuanLyThuVien.Migrations
                     b.Property<Guid>("NhanVienId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<float>("TienNo")
+                        .HasColumnType("real");
+
+                    b.Property<float>("TienNoConlai")
+                        .HasColumnType("real");
+
                     b.Property<float>("TienThu")
                         .HasColumnType("real");
 
@@ -274,7 +280,13 @@ namespace QuanLyThuVien.Migrations
                     b.Property<DateTime>("NgayTra")
                         .HasColumnType("datetime2");
 
+                    b.Property<float>("TienNo")
+                        .HasColumnType("real");
+
                     b.Property<float>("TienPhat")
+                        .HasColumnType("real");
+
+                    b.Property<float>("TongNo")
                         .HasColumnType("real");
 
                     b.HasKey("Id");
@@ -359,9 +371,6 @@ namespace QuanLyThuVien.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<Guid>("NhanVienId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -377,8 +386,6 @@ namespace QuanLyThuVien.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NhanVienId");
 
                     b.ToTable("Users");
                 });
@@ -531,17 +538,6 @@ namespace QuanLyThuVien.Migrations
                 });
 
             modelBuilder.Entity("Entities.Models.ThanhLySach", b =>
-                {
-                    b.HasOne("Entities.Models.NhanVien", "NhanVien")
-                        .WithMany()
-                        .HasForeignKey("NhanVienId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NhanVien");
-                });
-
-            modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.HasOne("Entities.Models.NhanVien", "NhanVien")
                         .WithMany()

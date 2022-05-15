@@ -54,6 +54,16 @@ namespace QuanLyThuVien.Controllers
             var total = await _repository.Sach.CountTotalByName(sachParameters.Search);
             return Ok(new { total = total, listSachs = sach });
         }
+        [HttpGet("ThongKeSachMuon")]
+        public async Task<IActionResult> ThongKeSachMuon(DateTime thang)
+        {
+            return Ok( await _repository.Sach.ThongKeSachTheoTheLoai(thang));
+        }
+        [HttpGet("ThongKeSachTraTre")]
+        public async Task<IActionResult> ThongKeSachTraTre(DateTime ngay)
+        {
+            return Ok(await _repository.Sach.ThongKeSachTraTre(ngay));
+        }
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetSachById(Guid id)
         {
@@ -66,10 +76,10 @@ namespace QuanLyThuVien.Controllers
             return Ok(sach);
 
         }
-        [HttpGet("GetSachMuonByDocgiaId/{id}")]
-        public async Task<IActionResult> GetSachMuonByDocgiaId(Guid id)
+        [HttpGet("GetSachMuonByDocgiaId")]
+        public async Task<IActionResult> GetSachMuonByDocgiaId(Guid id, DateTime ngayTra)
         {
-            return Ok(await _sachService.GetListSachMuonByDocGiaId(id));
+            return Ok(await _sachService.GetListSachMuonByDocGiaId(id,ngayTra));
         }
         [HttpPost("CreateSach")]
         public async Task<IActionResult> CreateSach(SachForCreationDto sach)

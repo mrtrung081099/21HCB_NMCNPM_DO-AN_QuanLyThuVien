@@ -35,7 +35,7 @@ namespace Repository
         public async Task<IEnumerable<PhieuMuon>> GetAllPhieuMuonAsync(PhieuMuonParameters pmParameters)
         {
             List<PhieuMuon> pms;
-            pms = await FindAll().OrderBy(e => e.NgayMuon)
+            pms = await FindAll().OrderByDescending(e => e.NgayMuon)
                 .Skip((pmParameters.PageNumber - 1) * pmParameters.PageSize)
                 .Take(pmParameters.PageSize)
                 .ToListAsync(); 

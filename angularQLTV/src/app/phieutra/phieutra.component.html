@@ -81,7 +81,7 @@
           <nz-form-item class="formNgaymuon">
             <nz-form-label [nzSpan]="8">Ngày trả</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="8" nzErrorTip="Nhập ngày trả">
-              <nz-date-picker formControlName="ngayTra" nzPlaceHolder="Nhập ngày trả" name="required" required></nz-date-picker>
+              <nz-date-picker (ngModelChange)="onSelectNgayTra($event)" formControlName="ngayTra" nzPlaceHolder="Nhập ngày trả" name="required" required></nz-date-picker>
             </nz-form-control>
           </nz-form-item>
          </div>

@@ -10,8 +10,5 @@ namespace Entities.DTO.User
     {
         public Guid Id { get; set; }
         public string Email { get; set; }
-        public Guid NhanVienId { get; set; }
-        public string TenNhanVien { get; set; }
-        public string BoPhan { get; set; }
     }
 }

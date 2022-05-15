@@ -86,9 +86,7 @@ export class PhieuphatComponent implements OnInit {
     this.createForm.value.tienThu = this.tienThu;
     this.createForm.value.tienNoConlai = this.tienNoConlai;
     if(this.createForm.valid && this.tienThu>0){
-      console.log(this.createForm.value);
       this.phieuphatService.CreatePhieuPhat(this.createForm.value).subscribe((res: any) => {
-        console.log(res);
         this.message.create('success', "Thêm phiếu trả thành công");
         this.isVisible =false;
         this.tienNo = 0;
@@ -111,23 +109,40 @@ export class PhieuphatComponent implements OnInit {
     }
   }
   onSelectDocGia(docgiaId:any){
-    const index = this.listDocGia.findIndex((item:any) => item.id === docgiaId);
-    this.tienNo = this.listDocGia[index].tongNo;
-    if(this.tienNo == 0){
-      this.message.create('warning', "Độc giả không bị nợ tiền");
+    if(docgiaId != ''){
+      const index = this.listDocGia.findIndex((item:any) => item.id === docgiaId);
+      this.tienNo = this.listDocGia[index].tongNo;
+      if(this.tienNo == 0){
+        this.message.create('warning', "Độc giả không bị nợ tiền");
+        this.createForm.controls['docGiaId'].setValue('');
+      }
     }
   }
   handleCancel2(){
     this.isShowDetai = false;
   }
   onChangeTienThu(tienThu:number){
-    if(tienThu <= this.tienNo){
-      this.tienThu = tienThu;
-      this.tienNoConlai = this.tienNo - this.tienThu;
+    if(tienThu != 0){
+      if(tienThu <= this.tienNo){
+        this.tienThu = tienThu;
+        this.tienNoConlai = this.tienNo - this.tienThu;
+      }
+      else{
+        this.tienNoConlai = 0;
+        this.message.create('error', "Tiền thu không vượt tiền nợ");
+        this.createForm.controls['tienThu'].setValue(0);
+      }
     }
-    else{
-      this.tienNoConlai = 0;
-      this.message.create('error', "Tiền thu không vượt tiền nợ");
+  }
+  onChangeNhanVien(nhanVienId:any){
+    if(nhanVienId != ''){
+      const index = this.listNhanVien.findIndex(
+      (item: any) => item.id === nhanVienId
+      );
+      if(this.listNhanVien[index].boPhan != 'Thủ Quỹ'){
+        this.message.create('error', "Người thu tiền phải là nhân viên thuộc bộ phận thủ quỹ");
+        this.createForm.controls['nhanVienId'].setValue('');
+      }
     }
   }
 }

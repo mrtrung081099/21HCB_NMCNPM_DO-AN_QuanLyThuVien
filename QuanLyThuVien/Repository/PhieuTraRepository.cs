@@ -35,7 +35,7 @@ namespace Repository
         public async Task<IEnumerable<PhieuTra>> GetAllPhieuTraAsync(PhieuTraParameters ptParameters)
         {
             List<PhieuTra> pts;
-            pts = await FindAll().OrderBy(e => e.NgayTra)
+            pts = await FindAll().OrderByDescending(e => e.NgayTra)
                 .Skip((ptParameters.PageNumber - 1) * ptParameters.PageSize)
                 .Take(ptParameters.PageSize)
                 .ToListAsync();

@@ -45,9 +45,7 @@ namespace QuanLyThuVien
             CreateMap<SachThanhLyForCreationDto, ChiTietThanhLySach>();
             CreateMap<ThanhLySachForCreationDto, ThanhLySach>();
 
-            CreateMap<User, UserForView>()
-                .ForMember(x => x.BoPhan, opt => opt.MapFrom(x => x.NhanVien.BoPhan))
-                .ForMember(x => x.TenNhanVien, opt => opt.MapFrom(x => x.NhanVien.HoTen));
+            CreateMap<User, UserForView>();
         }
     }
 }

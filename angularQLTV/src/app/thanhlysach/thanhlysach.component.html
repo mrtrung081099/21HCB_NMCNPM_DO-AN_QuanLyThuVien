@@ -68,15 +68,15 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="8">Họ tên người thanh lý</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên người thanh lý">
-              <nz-select formControlName="nhanVienId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên người thanh lý" name="required" required>
+              <nz-select (ngModelChange)="onChangeNhanVien($event)" formControlName="nhanVienId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên người thanh lý" name="required" required>
                 <nz-option *ngFor="let b of listNhanVien" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item class="formNgaymuon">
             <nz-form-label [nzSpan]="8">Ngày thanh lý</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSpan]="8" nzErrorTip="Nhập ngày mượn">
-              <nz-date-picker formControlName="ngayThanhLy" nzPlaceHolder="Nhập ngày mượn" name="required" required></nz-date-picker>
+            <nz-form-control nzHasFeedback [nzSpan]="8" nzErrorTip="Nhập ngày thanh lý">
+              <nz-date-picker formControlName="ngayThanhLy" nzPlaceHolder="Nhập ngày thanh lý" name="required" required></nz-date-picker>
             </nz-form-control>
           </nz-form-item>
         </form>

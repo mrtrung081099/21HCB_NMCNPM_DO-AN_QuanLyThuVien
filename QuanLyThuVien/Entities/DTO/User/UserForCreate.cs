@@ -13,8 +13,6 @@ namespace Entities.DTO.User
         [EmailAddress(ErrorMessage = "Vui lòng nhập mail hợp lệ")]
         public string Email { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Vui lòng nhập id nhân viên")]
-        public Guid NhanVienId { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Vui lòng nhập mật khẩu")]
         public string Password { get; set; }
         [Compare(otherProperty: "Password", ErrorMessage = "Mật khẩu không khớp")]
         public string ConfirmPassword { get; set; }

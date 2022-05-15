@@ -68,7 +68,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="8">Họ tên độc giả</nz-form-label>
             <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên tên độc giả">
-              <nz-select formControlName="docGiaId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên tên độc giả" name="required" required>
+              <nz-select formControlName="docGiaId" nzShowSearch nzAllowClear nzPlaceHolder="Nhập tên tên độc giả" name="required" required (ngModelChange)="onChangeDocGia($event)">
                 <nz-option *ngFor="let b of listDocGia" [nzValue]="b.id" [nzLabel]="b.hoTen"></nz-option>
               </nz-select>
             </nz-form-control>

@@ -17,6 +17,7 @@ export class PhieumatComponent implements OnInit {
   listNhanVien:any[]=[];
   listSach:any[]=[];
   total:number=0;
+  giaTemp:number=0;
   pageNum:number=1;
   pageSize:number=10;
   isVisible:boolean=false;
@@ -24,7 +25,6 @@ export class PhieumatComponent implements OnInit {
   isShowDetai:boolean=false;
   phieuMatInFo:any;
   createForm!: FormGroup;
-
   constructor(
     private phieumatService:PhieumatService,
     private fb: FormBuilder,
@@ -32,7 +32,6 @@ export class PhieumatComponent implements OnInit {
     private sachService: SachService,
     private nhanvienService:NhanvienService,
     private message: NzMessageService
-
   ) { }
 
   ngOnInit() {
@@ -63,11 +62,13 @@ export class PhieumatComponent implements OnInit {
     });
   }
   getSachMuonByDocGiaId(docgiaId:any){
-    this.sachService.GetSachMuonByDocGiaId(docgiaId).subscribe((res: any) => {
+    var date = new Date;
+    this.sachService.GetSachMuonByDocGiaId(docgiaId,date).subscribe((res: any) => {
       if(res.length>0){
         this.listSach = res;
       }else{
         this.message.create('warning', "Độc giả không có sách mượn");
+        this.createForm.controls['docGiaId'].setValue('');
       }
     }, (err) => {
       console.log(err);
@@ -96,16 +97,21 @@ export class PhieumatComponent implements OnInit {
   }
   handleOk(){
     if(this.createForm.valid){
-      console.log(this.createForm.value);
-      this.phieumatService.CreatePhieuMat(this.createForm.value).subscribe((res: any) => {
-        console.log(res);
-        this.message.create('success', "Ghi nhận mất sách thành công");
-        this.isVisible =false;
-        this.getAllPhieuMat();
-      }, (err) => {
-        console.log(err);
-        this.message.create('error', "Đã có lỗi xảy ra");
-      });
+      var temp = this.createForm.controls['tienPhat'].value;
+      temp = parseInt(temp);
+      if(temp >= this.giaTemp){
+        this.phieumatService.CreatePhieuMat(this.createForm.value).subscribe((res: any) => {
+          this.message.create('success', "Ghi nhận mất sách thành công");
+          this.isVisible =false;
+          this.getAllPhieuMat();
+        }, (err) => {
+          console.log(err);
+          this.message.create('error', "Đã có lỗi xảy ra");
+        });
+      }
+      else{
+        this.message.create('warning', "Tiền phạt không nhỏ hơn trị giá quyển sách");
+      }
     }
     else{
       this.message.create('warning', "Vui lòng điền đủ thông tin");
@@ -122,13 +128,32 @@ export class PhieumatComponent implements OnInit {
     this.isShowDetai = false;
   }
   onSelectDocGia(docgiaId:any){
-    this.getSachMuonByDocGiaId(docgiaId);
+    if(docgiaId != ''){
+      this.getSachMuonByDocGiaId(docgiaId);
+    }
   }
   onSelectSach(sachId:any){
     this.sachService.GetSachById(sachId).subscribe((res: any) => {
-        this.createForm.get('tienPhat')?.setValue(res.gia);
+      this.giaTemp = res.gia;
+      this.createForm.controls['tienPhat'].setValue(res.gia);
     }, (err) => {
       console.log(err);
     });
+  }
+  onChangeGia(gia:number){
+    if(gia < this.giaTemp){
+      this.message.create('warning', "Tiền phạt không nhỏ hơn trị giá quyển sách");
+    }
+  }
+  onChangeNhanVien(nhanVienId:any){
+    if(nhanVienId != ''){
+      const index = this.listNhanVien.findIndex(
+      (item: any) => item.id === nhanVienId
+      );
+      if(this.listNhanVien[index].boPhan != 'Thủ Thư'){
+        this.message.create('error', "Người ghi nhận mất sách phải là nhân viên thuộc bộ phận thủ thư");
+        this.createForm.controls['nhanVienId'].setValue('');
+      }
+    }
   }
 }

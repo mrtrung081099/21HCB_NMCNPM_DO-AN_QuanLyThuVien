@@ -4,7 +4,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+::ng-deep .ant-table-thead > tr > th{
+  text-align:center;
+}
+::ng-deep .ant-table-tbody > tr > td{
+  text-align:center;
+}
 .menu-sidebar {
   position: relative;
   z-index: 10;
@@ -68,13 +73,12 @@ nz-header {
 }
 
 nz-content {
-  margin: 24px;
+  overflow: auto;
 }
 
 .inner-content {
   padding: 24px;
   background: #fff;
-  height: 100%;
 }
 #parentLogin {
   width: 100vw;
@@ -106,4 +110,10 @@ nz-avatar {
   font-size: 18px;
   display: flex;
   justify-content: space-around;
+}
+.app-layout{
+  max-height: 100vh;
+}
+.ant-layout {
+  background: white;
 }

@@ -41,6 +41,7 @@ export class SachComponent implements OnInit {
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.getAllSach();
+    this.getAllNhanViens();
   }
   getAllSach(){
     this.sachService.GetAllSach(this.pageNum,this.pageSize).subscribe((res:any) => {
@@ -75,7 +76,6 @@ export class SachComponent implements OnInit {
   showInfoSach(input:any):void{
     this.infoSachSimple = input;
     this.isShowInfoSach = true;
-    console.log(this.infoSachSimple);
   }
   showModalCreate(): void {
     this.createForm = this.fb.group({
@@ -86,7 +86,8 @@ export class SachComponent implements OnInit {
       nhaSx: ["", Validators.required],
       tinhTrang: [this.arrStateSach[0], Validators.required],
       gia: ["", Validators.required],
-      nhanVienId: [this.currentUser.nhanVienId, Validators.required]
+      ngayTiepNhan:["", Validators.required],
+      nhanVienId: ["", Validators.required]
     });
     this.isCreate=true;
     this.isVisible = true;
@@ -126,7 +127,6 @@ export class SachComponent implements OnInit {
   }
   getAllNhanViens(): void {
     this.nhanvienService.GetAllNhanVien().subscribe((res: any) => {
-      console.log(res);
       this.filteredNhanVien = res.listNvs;
     }, (err) => console.log(err));
   }
@@ -152,11 +152,11 @@ export class SachComponent implements OnInit {
       nhaSx: [input.nhaSx, Validators.required],
       tinhTrang: [input.tinhTrang, Validators.required],
       gia: [input.gia, Validators.required],
+      ngayTiepNhan:[input.ngayTiepNhan, Validators.required],
       nhanVienId: [input.nhanVienId, Validators.required]
     });
     this.isUpdate=true;
     this.isVisible = true;
-    console.log(this.createForm.value);
   }
   saveEdit(): void {
     const index = this.listSach.findIndex((item: any) => item.id === this.tempId);
@@ -204,6 +204,32 @@ export class SachComponent implements OnInit {
       this.getAllSach();
     }else{
       this.getAllByState();
+    }
+  }
+  onChangeNhanVien(id:any){
+    if(id != ""){
+      const index = this.filteredNhanVien.findIndex((item: any) => item.id === id);
+      if(this.filteredNhanVien[index].boPhan != "Thủ Kho"){
+        this.createForm.controls['nhanVienId'].setValue("");
+        this.message.create('warning', "Người nhận sách phải là nhân viên thuộc bộ phận Thủ Kho");
+      }
+    }
+  }
+  onChangeYear(year: Date){
+    // console.log(year.getFullYear());
+    // var today = new Date();
+    // var age = today.getFullYear() - date.getFullYear();
+    if(year.toString() != ""){
+      var today = new Date();
+      var age = today.getFullYear() - year.getFullYear();
+      var m = today.getMonth() - year.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < year.getDate())) {
+          age--;
+      }
+      if(age > 8){
+        this.createForm.controls['namSx'].setValue("");
+        this.message.create('warning', "Chỉ nhận các sách xuất bản trong vòng 8 năm");
+      }
     }
   }
 }
