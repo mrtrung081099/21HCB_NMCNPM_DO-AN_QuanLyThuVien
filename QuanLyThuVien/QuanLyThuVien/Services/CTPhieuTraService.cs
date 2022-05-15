@@ -40,6 +40,9 @@ namespace QuanLyThuVien.Services
             var chitietpt = _mapper.Map<ChiTietPhieuTra>(chitietDto);
             chitietpt.PhieuTraId = ptId;
             chitietpt.SachId = ctpt.Id;
+            chitietpt.NgayMuon = ctpt.NgayMuon;
+            chitietpt.SoNgayMuon = ctpt.SoNgayMuon;
+            chitietpt.TienPhat = ctpt.TienPhat;
             _repository.CTPhieuTra.CreateCTPhieuTra(chitietpt);
             await _repository.SaveAsync();
         }

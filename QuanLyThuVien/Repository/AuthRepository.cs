@@ -25,11 +25,6 @@ namespace Repository
         public async Task<User> GetUser(string email)
         {
             var user = await FindByCondition(user => user.Email == email).FirstOrDefaultAsync();
-            if (user != null)
-            {
-                var nv = await RepositoryContext.NhanViens.FindAsync(user.NhanVienId);
-                user.NhanVien = nv;
-            }
             return user;
         }
 

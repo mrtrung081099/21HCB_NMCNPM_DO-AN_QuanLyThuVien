@@ -29,6 +29,8 @@ export class PhieutraComponent implements OnInit {
   phieuTraInFo:any;
   selectSach:string="";
   createForm!: FormGroup;
+  ngayTra:Date = new Date;
+  docgiaId:any;
   constructor(
     private phieutraService: PhieutraService,
     private message: NzMessageService,
@@ -58,13 +60,13 @@ export class PhieutraComponent implements OnInit {
       console.log(err);
     });
   }
-  getSachMuonByDocGiaId(docgiaId:any){
-    this.sachService.GetSachMuonByDocGiaId(docgiaId).subscribe((res: any) => {
-      console.log(res);
+  getSachMuonByDocGiaId(){
+    this.sachService.GetSachMuonByDocGiaId(this.docgiaId,this.ngayTra).subscribe((res: any) => {
       if(res.length>0){
         this.listSach = res;
       }else{
         this.message.create('warning', "Độc giả không có sách mượn");
+        this.createForm.controls['docGiaId'].setValue('');
       }
     }, (err) => {
       console.log(err);
@@ -92,11 +94,10 @@ export class PhieutraComponent implements OnInit {
     this.isVisible = false;
   }
   handleOk(){
-    console.log(this.createForm.value);
     if(this.createForm.valid && this.listSachTraTemp.length > 0){
       console.log(this.createForm.value);
+      console.log(this.listSachTraTemp.length);
       this.phieutraService.CreatePhieuTra(this.createForm.value).subscribe((res: any) => {
-        console.log(res);
         this.message.create('success', "Thêm phiếu trả thành công");
         this.listSachTraTemp=[];
         this.isVisible =false;
@@ -131,12 +132,14 @@ export class PhieutraComponent implements OnInit {
     this.tienPhat=this.tienPhat+input.tienPhat;
     this.tongNo = this.tienNo + this.tienPhat;
     console.log(this.listSachTraTemp);
+    this.createForm.controls['sachTras'].setValue(this.listSachTraTemp);
     this.isAddSach=false;
     this.createForm.value.tienPhat = this.tienPhat;
     this.createForm.value.tongNo = this.tongNo;
     this.selectSach="";
     const index = this.listSach.findIndex((item:any) => item.id === input.id);
     this.listSach = this.listSach.filter((item:any) => item !== this.listSach[index]);
+
   }
   cancel(){
     this.isAddSach = false;
@@ -148,10 +151,18 @@ export class PhieutraComponent implements OnInit {
     this.isShowDetai = false;
   }
   onSelectDocGia(docgiaId:any){
-    console.log(docgiaId);
-    const index = this.listDocGia.findIndex((item:any) => item.id === docgiaId);
-    this.tienNo = this.listDocGia[index].tongNo;
-    this.createForm.value.tienNo = this.tienNo;
-    this.getSachMuonByDocGiaId(docgiaId);
+    if(docgiaId != ''){
+      this.docgiaId = docgiaId;
+      const index = this.listDocGia.findIndex((item:any) => item.id === docgiaId);
+      this.tienNo = this.listDocGia[index].tongNo;
+      this.createForm.value.tienNo = this.tienNo;
+      this.getSachMuonByDocGiaId();
+    }
+  }
+  onSelectNgayTra(ngayTra:Date){
+    this.ngayTra = ngayTra;
+    this.listSachTraTemp = [];
+    this.listSach = [];
+    this.getSachMuonByDocGiaId();
   }
 }

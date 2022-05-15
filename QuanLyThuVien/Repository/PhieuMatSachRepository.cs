@@ -38,7 +38,7 @@ namespace Repository
         public async Task<IEnumerable<PhieuMatSach>> GetAllPhieuMatSachAsync(PhieuMatSachParameters phieuMatSachParameters)
         {
             List<PhieuMatSach> phieuMatSaches;
-            phieuMatSaches = await FindAll().OrderBy(e => e.NgayGhiNhan)
+            phieuMatSaches = await FindAll().OrderByDescending(e => e.NgayGhiNhan)
                 .Skip((phieuMatSachParameters.PageNumber - 1) * phieuMatSachParameters.PageSize)
                 .Take(phieuMatSachParameters.PageSize)
                 .ToListAsync();
@@ -63,7 +63,7 @@ namespace Repository
                             TenDocGia = dg.HoTen,
                             TenNhanVien = nv.HoTen
                         };
-            var result = query.OrderBy(e => e.NgayGhiNhan)
+            var result = query.OrderByDescending(e => e.NgayGhiNhan)
                 .Skip((phieuMatSachParameters.PageNumber - 1) * phieuMatSachParameters.PageSize)
                 .Take(phieuMatSachParameters.PageSize)
                 .ToListAsync();

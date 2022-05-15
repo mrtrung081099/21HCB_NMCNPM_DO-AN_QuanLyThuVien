@@ -16,6 +16,11 @@ export class DocgiaComponent implements OnInit {
   pageSize: number = 10;
   isVisible: boolean = false;
   isOkLoading: boolean = false;
+  isShowInfoDocGia: boolean = false;
+  isUpdate: boolean = false;
+  isCreate: boolean = false;
+  infoDocGiaSimple:any;
+  tempId:any;
   totalDG: number = 0;
   search: string = '';
   listDocGia: any[] = [];
@@ -34,16 +39,7 @@ export class DocgiaComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.getAllDocGias();
     this.getAllNhanViens();
-    this.createForm = this.fb.group({
-      hoTen: ["", Validators.required],
-      loai: ["", Validators.required],
-      ngaySinh: ["", Validators.required],
-      diaChi: ["", Validators.required],
-      email: ["", Validators.required],
-      ngayLap: ["", Validators.required],
-      tongNo: ["", Validators.required],
-      nhanVienId: ["", Validators.required]
-    });
+
   }
 
   getAllDocGias() {
@@ -60,13 +56,24 @@ export class DocgiaComponent implements OnInit {
 
   getAllNhanViens() {
     this._nhanvienService.GetAllNhanVien().subscribe((res: any) => {
-      console.log(res);
       this.filteredNhanVien = res.listNvs;
     }, (err) => console.log(err));
   }
 
-  startEdit(id: string): void {
-    this.editCache[id].edit = true;
+  startEdit(data: any): void {
+    this.tempId= data.id;
+    this.createForm = this.fb.group({
+      hoTen: [data.hoTen, Validators.required],
+      loai: [data.loai, Validators.required],
+      ngaySinh: [data.ngaySinh, Validators.required],
+      diaChi: [data.diaChi, Validators.required],
+      email: [data.email, Validators.required],
+      ngayLap: [data.ngayLap, Validators.required],
+      tongNo: [0, Validators.required],
+      nhanVienId: [data.nhanVienId, Validators.required]
+    });
+    this.isUpdate=true;
+    this.isVisible = true;
   }
 
   cancelEdit(id: string): void {
@@ -77,18 +84,30 @@ export class DocgiaComponent implements OnInit {
     };
   }
 
-  saveEdit(id: string): void {
-    const index = this.listDocGia.findIndex((item: any) => item.id === id);
-    Object.assign(this.listDocGia[index], this.editCache[id].data);
-    this._docgiaService.UpdateDocGia(id, this.listDocGia[index]).subscribe((res: any) => {
-      this.message.create('success', "Sửa thành công");
-      this.editCache[id].edit = false;
-      this.getAllDocGias();
-    },
+  saveEdit(): void {
+    const index = this.listDocGia.findIndex((item: any) => item.id === this.tempId);
+    if(this.createForm.valid){
+      this._docgiaService.UpdateDocGia(this.tempId,this.createForm.value).subscribe((res: any) => {
+        this.message.create('success', "Sửa thành công");
+        Object.assign(this.listDocGia[index], res);
+        this.isVisible = false;
+        this.isUpdate=false;
+        this.isOkLoading = false;
+      },
       (err) => {
         console.log(err);
         this.message.create('error', "Đã có lỗi xảy ra");
       });
+    }
+    else{
+      this.message.create('warning', "Vui lòng điền đủ thông tin");
+      Object.values(this.createForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 
   updateEditCache(): void {
@@ -114,7 +133,18 @@ export class DocgiaComponent implements OnInit {
   }
 
   showModal(): void {
+    this.createForm = this.fb.group({
+      hoTen: ["", Validators.required],
+      loai: ["", Validators.required],
+      ngaySinh: ["", Validators.required],
+      diaChi: ["", Validators.required],
+      email: ["", Validators.required],
+      ngayLap: ["", Validators.required],
+      tongNo: [0, Validators.required],
+      nhanVienId: ["", Validators.required]
+    });
     this.isVisible = true;
+    this.isCreate = true;
   }
 
   handleOk(): void {
@@ -148,7 +178,9 @@ export class DocgiaComponent implements OnInit {
   handleCancel(): void {
     this.isVisible = false;
   }
-
+  handleCancelInfo(): void {
+    this.isShowInfoDocGia = false;
+  }
   getByPaging(input: any): void {
     this.pageNum = input;
     this.getAllDocGias();
@@ -163,5 +195,36 @@ export class DocgiaComponent implements OnInit {
       this.getAllDocGias();
     }
   }
-
+  showInfoDocGia(data:any){
+    this.infoDocGiaSimple = data;
+    this.isShowInfoDocGia = true
+  }
+  onChangeDate(date:Date){
+    if(date.toString() != ""){
+      var today = new Date();
+      var age = today.getFullYear() - date.getFullYear();
+      var m = today.getMonth() - date.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
+          age--;
+      }
+      if(!(18<age && age<=55)){
+        this.createForm.controls['ngaySinh'].setValue("");
+        this.message.create('warning', "Tuổi độc giả từ 18 đến 55");
+      }
+    }
+  }
+  onChangeNhanVien(id:any){
+    if(id != ""){
+      const index = this.filteredNhanVien.findIndex((item: any) => item.id === id);
+      if(this.filteredNhanVien[index].boPhan != "Thủ Thư"){
+        this.createForm.controls['nhanVienId'].setValue("");
+        this.message.create('warning', "Người lập thẻ độc giả phải là nhân viên thuộc bộ phận thủ thư");
+      }
+    }
+  }
+  handleCancelModalCreate(): void {
+    this.isVisible = false;
+    this.isCreate = false;
+    this.isUpdate = false;
+  }
 }

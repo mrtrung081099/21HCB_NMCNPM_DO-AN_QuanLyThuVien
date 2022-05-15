@@ -38,14 +38,14 @@ namespace Repository
             List<NhanVien> nhanviens;
             if (nhanvienParameters.Search == null || nhanvienParameters.Search == "null")
             {
-                nhanviens = await FindAll().OrderBy(e => e.HoTen)
+                nhanviens = await FindAll().OrderBy(e => e.BoPhan)
                 .Skip((nhanvienParameters.PageNumber - 1) * nhanvienParameters.PageSize)
                 .Take(nhanvienParameters.PageSize)
                 .ToListAsync();
             }
             else
             {
-                nhanviens = await FindByCondition(x => x.HoTen.Contains(nhanvienParameters.Search)).OrderBy(e => e.HoTen)
+                nhanviens = await FindByCondition(x => x.HoTen.Contains(nhanvienParameters.Search)).OrderBy(e => e.BoPhan)
                 .Skip((nhanvienParameters.PageNumber - 1) * nhanvienParameters.PageSize)
                 .Take(nhanvienParameters.PageSize)
                 .ToListAsync();

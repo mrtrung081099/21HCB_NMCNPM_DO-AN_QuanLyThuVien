@@ -1,0 +1,76 @@
+<div>
+  <div class="title"><h1>Báo Cáo Thông Kê Tình Hình Mượn Sách Theo Thể Loại</h1></div>
+  <div class="rowSelect"><div><p class="p">Tháng: </p></div><nz-date-picker [(ngModel)]="thang" nzMode="month" nzPlaceHolder="Nhập tháng" (ngModelChange)="getMonth($event)"></nz-date-picker></div>
+  <nz-table nzBordered [nzData]="listThongKeSachMuon" [nzShowPagination]="false" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th class="stt">STT</th>
+        <th>Tên Thể Loại</th>
+        <th>Số Lượt Mượn</th>
+        <th class="tiLe">Tỉ Lệ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listThongKeSachMuon; index as i" >
+        <ng-container>
+          <td>{{i+1}}</td>
+          <td>{{ data.tenTheLoai}}</td>
+          <td>{{ data.soLuotMuon}}</td>
+          <td>{{ data.tiLe * 100}} %</td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="footer">
+    <h3>Tổng số lượt mượn: {{total}}</h3>
+  </div>
+
+
+  <div class="title"><h1>Báo Cáo Thống Kê Sách Trả Trễ</h1></div>
+  <div class="rowSelect"><div><p class="p">Ngày: </p></div><nz-date-picker [(ngModel)]="ngay" nzMode="date" nzPlaceHolder="Nhập ngày" (ngModelChange)="getDay($event)"></nz-date-picker></div>
+  <nz-table nzBordered [nzData]="listThongKeSachTraTre" [nzShowPagination]="false" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th class="stt">STT</th>
+        <th>Tên Sách</th>
+        <th>Ngày Mượn</th>
+        <th class="tiLe">Số Ngày Trả Trễ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listThongKeSachTraTre; index as i" >
+        <ng-container>
+          <td>{{i+1}}</td>
+          <td>{{ data.tenSach}}</td>
+          <td>{{ data.ngayMuon | date:'dd/MM/yyyy'}}</td>
+          <td>{{ data.soNgayTraTre}}</td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+
+
+  <div class="title" style="margin-top: 10px;"><h1>Báo Cáo Thống Kê Độc Giả Nợ Tiền Phạt</h1></div>
+  <div class="rowSelect"><div><p class="p">Ngày: </p></div><nz-date-picker [(ngModel)]="ngay2" nzMode="date" nzPlaceHolder="Nhập ngày" (ngModelChange)="getDay2($event)"></nz-date-picker></div>
+  <nz-table nzBordered [nzData]="listThongKeDocGiaNoTien" [nzShowPagination]="false" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th class="stt">STT</th>
+        <th>Tên Độc Giả</th>
+        <th>Tiền Nợ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listThongKeDocGiaNoTien; index as i" >
+        <ng-container>
+          <td>{{i+1}}</td>
+          <td>{{ data.tenDocGia}}</td>
+          <td>{{ data.tienNo}}</td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="footer">
+    <h3>Tổng tiền nợ: {{totalTienNo}} đồng</h3>
+  </div>
+</div>

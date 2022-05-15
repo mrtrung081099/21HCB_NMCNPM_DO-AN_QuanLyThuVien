@@ -26,7 +26,6 @@ namespace QuanLyThuVien.Services
         public async Task<SachDto> CreateSachAsync(SachForCreationDto Sach)
         {
             var sach = _mapper.Map<Sach>(Sach);
-            sach.NgayTiepNhan = DateTime.Now;
             _repository.Sach.CreateSach(sach);
             await _repository.SaveAsync();
             var result = await GetSachDtoByIdAsync(sach.Id);
@@ -112,13 +111,12 @@ namespace QuanLyThuVien.Services
                     await _repository.SaveAsync();
                 }
         }
-        public async Task<List<SachMuonDto>> GetListSachMuonByDocGiaId(Guid docgiaId)
+        public async Task<List<SachMuonDto>> GetListSachMuonByDocGiaId(Guid docgiaId,DateTime ngayTra)
         {
             var sach = await _repository.Sach.GetAllSachMuonByDocGiaIdAsync(docgiaId);
             foreach(var item in sach)
             {
-                var ngayTra = DateTime.Now;
-                TimeSpan Time = ngayTra - item.NgayMuon;
+                TimeSpan Time = ngayTra.Date - item.NgayMuon.Date;
                 item.SoNgayMuon = Time.Days;
                 var ngayTre = item.SoNgayMuon - 4;
                 if (ngayTre > 0)

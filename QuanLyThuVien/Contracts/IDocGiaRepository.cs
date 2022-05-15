@@ -12,6 +12,8 @@ namespace Contracts
     {
         Task<IEnumerable<DocGia>> GetAllDocGiaAsync(DocGiaParameters nhanvienParameters);
         Task<DocGia> GetDocGiaByIdAsync(Guid id);
+        Task<List<ThongKeDocGiaNoTien>> ThongKeDocGiaNoTien(DateTime ngay);
+        Task<bool> CheckDeadlineMuonSachDocGia(Guid id);
         void CreateDocGia(DocGia docgia);
         void UpdateDocGia(DocGia docgia);
         void DeleteDocGia(DocGia docgia);

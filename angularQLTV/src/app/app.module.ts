@@ -39,6 +39,7 @@ import { PhieutraComponent } from './phieutra/phieutra.component';
 import { PhieuphatComponent } from './phieuphat/phieuphat.component';
 import { PhieumatComponent } from './phieumat/phieumat.component';
 import { ThanhlysachComponent } from './thanhlysach/thanhlysach.component';
+import { BaocaoComponent } from './baocao/baocao.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -52,7 +53,8 @@ registerLocaleData(en);
     PhieutraComponent,
     PhieuphatComponent,
       PhieumatComponent,
-      ThanhlysachComponent
+      ThanhlysachComponent,
+      BaocaoComponent
    ],
   imports: [
     BrowserModule,
@@ -89,7 +91,9 @@ registerLocaleData(en);
       { path: 'phieutras', component: PhieutraComponent, pathMatch: 'full' },
       { path: 'phieuphats', component: PhieuphatComponent, pathMatch: 'full' },
       { path: 'phieumats', component: PhieumatComponent, pathMatch: 'full' },
-      { path: 'thanhlysachs', component: ThanhlysachComponent, pathMatch: 'full' }
+      { path: 'thanhlysachs', component: ThanhlysachComponent, pathMatch: 'full' },
+      { path: 'baocaos', component: BaocaoComponent, pathMatch: 'full' }
+
     ], {
       onSameUrlNavigation: 'reload'
     })

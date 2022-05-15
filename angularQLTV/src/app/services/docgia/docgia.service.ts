@@ -31,6 +31,16 @@ export class DocgiaService {
       headers: new HttpHeaders({ "Content-Type": "application/json" }),
     });
   }
+  GetDocGiaNoTienTheoNgay(ngay:any) {
+    return this.http.get(environment.apiUrl + 'docgias/ThongKeDocGiaNoTien?ngay='+ngay.toJSON(), {
+      headers: new HttpHeaders({ "Content-Type": "application/json" }),
+    });
+  }
+  CheckDeadlineMuonSachDocGia(id:any) {
+    return this.http.get(environment.apiUrl + 'docgias/CheckDeadlineMuonSachDocGia/'+ id, {
+      headers: new HttpHeaders({ "Content-Type": "application/json" }),
+    });
+  }
   CreateDocGia(val: DocGiaForCreationUpdateDto) {
     return this.http.post(environment.apiUrl + "docgias/CreateDocGia", JSON.stringify(val), {
       headers: new HttpHeaders({

@@ -42,3 +42,23 @@ nz-pagination{
         margin-left: 0.5rem;
     }
 }
+.stt{
+  width: 5%;
+}
+.edit{
+  margin-left: 5px;
+}
+.infoSach{
+  display: flex;
+  width: 100%;
+  .col{
+    width: 33%;
+    .row{
+      margin-bottom: 10px;
+      display: flex;
+      h4{
+        margin-right: 5px;
+      }
+    }
+  }
+}

@@ -40,7 +40,7 @@ namespace Repository
         {
             List<Sach> sachs;
             sachs = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý") && !x.TinhTrang.Contains("Đã Mất"))
-                                        .OrderBy(e => e.TinhTrang)
+                                        .OrderByDescending(x => x.NgayTiepNhan)
                                         .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
                                         .Take(sachParameters.PageSize)
                                         .ToListAsync();
@@ -50,7 +50,7 @@ namespace Repository
         {
             List<Sach> sachs;
             sachs = await FindByCondition(x => !x.TinhTrang.Contains("Đã Thanh Lý") && !x.TinhTrang.Contains("Đã Mượn"))
-                                        .OrderBy(e => e.Ten)
+                                        .OrderByDescending(x => x.NgayTiepNhan)
                                         .ToListAsync();
             return sachs;
         }
@@ -80,6 +80,7 @@ namespace Repository
         {
             List<Sach> sachs;
             sachs = await FindByCondition(x => x.TinhTrang.Contains(sachParameters.Search))
+                                        .OrderByDescending(e => e.NgayTiepNhan)
                                         .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
                                         .Take(sachParameters.PageSize)
                                         .ToListAsync();
@@ -89,7 +90,7 @@ namespace Repository
         public async Task<IEnumerable<Sach>> GetAllSachByNameAsync(SachParameters sachParameters)
         {
             List<Sach> sachs;
-            sachs = await FindByCondition(x => x.Ten.Contains(sachParameters.Search))
+            sachs = await FindByCondition(x => x.Ten.Contains(sachParameters.Search)).OrderByDescending(e => e.NgayTiepNhan)
                                         .Skip((sachParameters.PageNumber - 1) * sachParameters.PageSize)
                                         .Take(sachParameters.PageSize)
                                         .ToListAsync();
@@ -108,7 +109,7 @@ namespace Repository
                         join ctpm in _repositoryContext.ChiTietPhieuMuons on s.Id equals ctpm.SachId
                         join pt in _repositoryContext.PhieuMuons on ctpm.PhieuMuonId equals pt.Id
                         where pt.DocGiaId == docgiaId && ctpm.TinhTrang == "Chưa Trả"
-                        orderby pt.NgayMuon 
+                        orderby  pt.NgayMuon descending
                         select new SachMuonDto
                         {
                             Id = s.Id,
@@ -149,6 +150,48 @@ namespace Repository
                         };
             var sachs = query.ToListAsync();
             return sachs;
+        }
+
+        public async Task<List<ThongKeSachMuon>> ThongKeSachTheoTheLoai(DateTime thang)
+        {
+            var query = from s in _repositoryContext.Sachs
+                        join ctms in _repositoryContext.ChiTietPhieuMuons on s.Id equals ctms.SachId
+                        join pm in _repositoryContext.PhieuMuons on ctms.PhieuMuonId equals pm.Id
+                        where pm.NgayMuon.Year == thang.Year && pm.NgayMuon.Month == thang.Month
+                        group s.Loai by s.Loai into grp
+                        select new ThongKeSachMuon
+                        {
+                            TenTheLoai = grp.Key,
+                            SoLuotMuon = grp.Count()
+                        };
+            var resutl = await query.ToListAsync();
+            float totalLoai = 0;
+            foreach(var a in resutl)
+            {
+                totalLoai = totalLoai + a.SoLuotMuon;
+            }
+            foreach (var b in resutl)
+            {
+                b.TiLe = (b.SoLuotMuon / totalLoai);
+            }
+            return resutl;
+        }
+
+        public async Task<List<ThongKeSachTraTre>> ThongKeSachTraTre(DateTime ngay)
+        {
+            var query = from s in _repositoryContext.Sachs
+                        join ctpt in _repositoryContext.ChiTietPhieuTras on s.Id equals ctpt.SachId
+                        join pt in _repositoryContext.PhieuTras on ctpt.PhieuTraId equals pt.Id
+                        where pt.NgayTra.Date == ngay.Date && ctpt.SoNgayMuon > 4
+                        select new ThongKeSachTraTre
+                        {
+                            TenSach = s.Ten,
+                            NgayMuon = ctpt.NgayMuon,
+                            SoNgayTraTre = ctpt.SoNgayMuon - 4
+                        };
+            var resutl = await query.ToListAsync();
+            return resutl;
+
         }
     }
 }

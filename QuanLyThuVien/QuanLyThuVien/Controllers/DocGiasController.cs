@@ -47,6 +47,22 @@ namespace QuanLyThuVien.Controllers
             }
             return Ok(await _docgiaService.GetDocGiaByIdAsync(dg));
         }
+        [HttpGet("CheckDeadlineMuonSachDocGia/{id}")]
+        public async Task<IActionResult> CheckDeadlineMuonSachDocGia(Guid id)
+        {
+            var dg = await _repository.DocGia.GetDocGiaByIdAsync(id);
+            if (dg == null)
+            {
+                _logger.LogInfo($"Độc giả với id: {id} không tồn tại .");
+                return NotFound();
+            }
+            return Ok(await _repository.DocGia.CheckDeadlineMuonSachDocGia(id));
+        }
+        [HttpGet("ThongKeDocGiaNoTien")]
+        public async Task<IActionResult> ThongKeDocGiaNoTien(DateTime ngay)
+        {
+            return Ok(await _repository.DocGia.ThongKeDocGiaNoTien(ngay));
+        }
         [HttpPost("CreateDocGia")]
         public async Task<IActionResult> CreateDocGia(DocGiaForCreationUpdateDto docgia)
         {

@@ -20,16 +20,14 @@
     </div>
     <button nz-button (click)="showModal()">
       <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
-      Thêm
+      Tiếp nhận nhân viên
     </button>
   </div>
   <nz-table #editRowTable nzBordered [nzShowPagination]="false" [nzData]="listNhanVien" nzTableLayout="fixed">
     <thead>
       <tr>
+        <th class="stt">STT</th>
         <th>Tên</th>
-        <th>Địa chỉ</th>
-        <th>Ngày sinh</th>
-        <th>Sđt</th>
         <th>Bằng cấp</th>
         <th>Bộ phận</th>
         <th>Chức vụ</th>
@@ -37,47 +35,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of editRowTable.data">
-        <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+      <tr *ngFor="let data of editRowTable.data; index as i">
+        <ng-container>
+          <td>{{i+1}}</td>
           <td>{{ data.hoTen }}</td>
-          <td>{{ data.diaChi }}</td>
-          <td>{{ data.ngaySinh | date:'longDate'}}</td>
-          <td>{{ data.sdt }}</td>
           <td>{{ data.bangCap }}</td>
           <td>{{ data.boPhan }}</td>
           <td>{{ data.chucVu }}</td>
           <td>
-            <a (click)="startEdit(data.id)">Sửa</a> 
+            <a (click)="showInfoSach(data)">Chi Tiết</a>
+            <a (click)="startEdit(data)" style="margin-left: 5px;">Sửa</a>
             <a *ngIf="currentUser?.nhanVienId != data.id" class="btnDel" nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?" (nzOnConfirm)="deleteNhanVien(data.id)">Xóa</a>
           </td>
         </ng-container>
-        <ng-template #editTemplate>
-          <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.hoTen" /></td>
-          <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.diaChi" /></td>
-          <td>
-            <nz-date-picker [(ngModel)]="editCache[data.id].data.ngaySinh"></nz-date-picker>
-          </td>
-          <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.sdt" /></td>
-          <td>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn bằng cấp" [(ngModel)]="editCache[data.id].data.bangCap">
-              <nz-option *ngFor="let b of arrBangCap" [nzValue]="b" [nzLabel]="b"></nz-option>
-            </nz-select>
-          </td>
-          <td>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn bộ phận" [(ngModel)]="editCache[data.id].data.boPhan">
-              <nz-option *ngFor="let b of arrBoPhan" [nzValue]="b" [nzLabel]="b"></nz-option>
-            </nz-select>
-          </td>
-          <td>
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn chức vụ" [(ngModel)]="editCache[data.id].data.chucVu">
-              <nz-option *ngFor="let b of arrChucVu" [nzValue]="b" [nzLabel]="b"></nz-option>
-            </nz-select>
-          </td>
-          <td>
-            <a (click)="saveEdit(data.id)" class="save">Lưu</a>
-            <a nz-popconfirm nzPopconfirmTitle="Bạn chắc chưa?" (nzOnConfirm)="cancelEdit(data.id)">Hủy</a>
-          </td>
-        </ng-template>
       </tr>
     </tbody>
   </nz-table>
@@ -88,7 +58,7 @@
 </div>
 <nz-modal
       [(nzVisible)]="isVisible"
-      nzTitle="Thêm mới nhân viên"
+      nzTitle="Tiếp nhận nhân viên"
       (nzOnCancel)="handleCancel()"
       (nzOnOk)="handleOk()"
       [nzOkLoading]="isOkLoading"
@@ -110,7 +80,7 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="5">Ngày sinh</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập ngày sinh">
-            <nz-date-picker class="datePickerForm" formControlName="ngaySinh" name="required" required ></nz-date-picker>
+            <nz-date-picker class="datePickerForm" nzPlaceHolder="Nhập ngày sinh" formControlName="ngaySinh" name="required" required ></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -144,5 +114,34 @@
           </nz-form-control>
         </nz-form-item>
       </form>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="handleCancelModalCreate()">Hủy</button>
+      <button *ngIf="isCreate" nz-button nzType="primary" (click)="handleOk()">Thêm mới</button>
+      <button *ngIf="isUpdate" nz-button nzType="primary" (click)="saveEdit()">Lưu</button>
+    </div>
+</nz-modal>
+<nz-modal
+      [(nzVisible)]="isShowInfoNhanVien"
+      nzTitle="Hồ Sơ Nhân Viên"
+      (nzOnCancel)="handleCancelInfo()"
+      [nzOkLoading]="isOkLoading"
+      [nzFooter] = null
+      nzWidth= 800px
+    >
+    <div *nzModalContent class="infoSach">
+      <div class="col">
+        <div class="row"><h4>Họ Và Tên: </h4><p>{{infoNhanVienSimple.hoTen}}</p></div>
+        <div class="row"><h4>Ngày Sinh: </h4><p>{{infoNhanVienSimple.ngaySinh | date: 'dd/MM/yyyy'}}</p></div>
+        <div class="row"><h4>Bằng Cấp: </h4><p>{{infoNhanVienSimple.bangCap}}</p></div>
+        <div class="row"><h4>Chức Vụ: </h4><p>{{infoNhanVienSimple.chucVu}}</p></div>
+
+      </div>
+      <div class="col">
+        <div class="row"><h4>Địa Chỉ: </h4><p>{{infoNhanVienSimple.diaChi}}</p></div>
+        <div class="row"><h4>Điện Thoại: </h4><p>{{infoNhanVienSimple.sdt}}</p></div>
+        <div class="row"><h4>Bộ Phận: </h4><p>{{infoNhanVienSimple.boPhan}}</p></div>
+      </div>
+
     </div>
 </nz-modal>

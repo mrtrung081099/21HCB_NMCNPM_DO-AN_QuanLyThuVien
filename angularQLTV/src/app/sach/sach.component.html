@@ -72,13 +72,13 @@
     <div *nzModalContent>
       <form nz-form [formGroup]="createForm">
         <nz-form-item>
-          <nz-form-label [nzSpan]="5">Tên sách</nz-form-label>
+          <nz-form-label [nzSpan]="7">Tên sách</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên sách">
             <input nz-input formControlName="ten" name="required" required />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSpan]="5">Thể loại</nz-form-label>
+          <nz-form-label [nzSpan]="7">Thể loại</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập thể loại">
             <nz-select formControlName="loai"  nzAllowClear nzPlaceHolder="Chọn thể loại" name="required" required>
               <nz-option *ngFor="let b of arrTypeSach" [nzValue]="b" [nzLabel]="b"></nz-option>
@@ -86,27 +86,41 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSpan]="5">Tác giả</nz-form-label>
+          <nz-form-label [nzSpan]="7">Tác giả</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập tên tác giả">
             <input nz-input formControlName="tacGia" name="required" required />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSpan]="5">Năm xuất bản</nz-form-label>
+          <nz-form-label [nzSpan]="7">Năm xuất bản</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập năm xuất bản">
-            <input nz-input formControlName="namSx" name="required" required />
+            <nz-date-picker nzMode="year" formControlName="namSx" nzPlaceHolder="Nhập năm xuất bản" name="required" required (ngModelChange)="onChangeYear($event)"></nz-date-picker>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSpan]="5">Nhà xuất bản</nz-form-label>
+          <nz-form-label [nzSpan]="7">Nhà xuất bản</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập nhà xuất bản">
             <input nz-input formControlName="nhaSx" name="required" required />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSpan]="5">Giá</nz-form-label>
+          <nz-form-label [nzSpan]="7">Giá</nz-form-label>
           <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập giá sách">
-            <input nz-input formControlName="gia" name="required" required />
+            <nz-input-number formControlName="gia" [nzMin]="0"></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7">Ngày nhập</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập ngày nhập">
+            <nz-date-picker class="datePickerForm" formControlName="ngayTiepNhan" nzPlaceHolder="Nhập ngày nhập" name="required" required></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7">Người Tiếp Nhận</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSpan]="16" nzErrorTip="Nhập nhân viên">
+            <nz-select formControlName="nhanVienId" nzAllowClear nzPlaceHolder="Chọn nhân viên" name="required" required (ngModelChange)="onChangeNhanVien($event)">
+              <nz-option *ngFor="let item of filteredNhanVien" [nzValue]="item.id" [nzLabel]="item.hoTen"></nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
       </form>
@@ -128,7 +142,7 @@
     <div *nzModalContent class="infoSach">
       <div class="col">
         <div class="row"><h4>Tên sách: </h4><p>{{infoSachSimple.ten}}</p></div>
-        <div class="row"><h4>Năm xuất bản: </h4><p>{{infoSachSimple.namSx}}</p></div>
+        <div class="row"><h4>Năm xuất bản: </h4><p>{{infoSachSimple.namSx |date: 'yyyy'}}</p></div>
         <div class="row"><h4>Trị giá: </h4><p>{{infoSachSimple.gia}} đồng</p></div>
       </div>
       <div class="col">

@@ -18,6 +18,8 @@ namespace Contracts
         Task<List<SachMuonDto>> GetAllSachMuonByPhieuTraIdAsync(Guid ptId);
         Task<List<SachThanhLyDto>> GetAllSachThanhLyByTlsIdAsync(Guid tlsId);
         Task<IEnumerable<Sach>> GetAllSachForThanhLyAsync();
+        Task<List<ThongKeSachMuon>> ThongKeSachTheoTheLoai(DateTime thang);
+        Task<List<ThongKeSachTraTre>> ThongKeSachTraTre(DateTime ngay);
         Task<Sach> GetSachByIdAsync(Guid id);
         Task<int> Count();
         Task<int> CountTotalByState(string trinhTrang);

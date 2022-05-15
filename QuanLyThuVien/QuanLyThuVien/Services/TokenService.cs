@@ -34,7 +34,6 @@ namespace QuanLyThuVien.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.NhanVien.BoPhan)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(EXPIRE_MINUTES),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

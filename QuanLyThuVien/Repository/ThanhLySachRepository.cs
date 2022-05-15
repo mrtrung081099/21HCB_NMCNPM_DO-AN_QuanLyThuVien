@@ -35,7 +35,7 @@ namespace Repository
         public async Task<IEnumerable<ThanhLySach>> GetAllThanhLySachAsync(ThanhLySachParameters thanhLySachParameters)
         {
             List<ThanhLySach> listTls;
-            listTls = await FindAll().OrderBy(e => e.NgayThanhLy)
+            listTls = await FindAll().OrderByDescending(e => e.NgayThanhLy)
                 .Skip((thanhLySachParameters.PageNumber - 1) * thanhLySachParameters.PageSize)
                 .Take(thanhLySachParameters.PageSize)
                 .ToListAsync();

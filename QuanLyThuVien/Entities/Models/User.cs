@@ -21,8 +21,5 @@ namespace Entities.Models
         public string PasswordSalt { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
-        [ForeignKey(nameof(NhanVien))]
-        public Guid NhanVienId { get; set; }
-        public NhanVien NhanVien { get; set; }
     }
 }

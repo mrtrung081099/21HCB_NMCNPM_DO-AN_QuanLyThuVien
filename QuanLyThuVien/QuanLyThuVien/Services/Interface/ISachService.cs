@@ -14,7 +14,7 @@ namespace QuanLyThuVien.Services.Interface
         public Task<IEnumerable<SachDto>> GetAllSachAsync(SachParameters SachParameters);
         public Task<IEnumerable<SachDto>> GetAllSachByStateAsync(SachParameters SachParameters);
         public Task<IEnumerable<SachDto>> GetAllSachByNameAsync(SachParameters SachParameters);
-        public Task<List<SachMuonDto>> GetListSachMuonByDocGiaId(Guid docgiaId);
+        public Task<List<SachMuonDto>> GetListSachMuonByDocGiaId(Guid docgiaId, DateTime ngayTra);
         public Task<List<SachMuonDto>> GetListSachTraByPtId(Guid ptId);
         public Task<SachDto> GetSachDtoByIdAsync(Guid id);
         public Task<Sach> GetSachByIdAsync(Guid id);
